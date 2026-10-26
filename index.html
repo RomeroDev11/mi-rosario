@@ -227,6 +227,47 @@ input[type=text]::placeholder{color:#7f92c4}
 .fin-msg h2{font-size:30px;color:var(--gold)}
 .intent{font:800 15px var(--f-body);padding:8px 16px;border-radius:999px;background:rgba(255,211,110,.16);border:1px solid rgba(255,211,110,.5)}
 
+/* juego: ordena el rosario */
+.btn.ghost{background:rgba(255,255,255,.08);color:var(--pearl);box-shadow:inset 0 0 0 1.5px var(--card-line)}
+.g-head{display:flex;align-items:center;gap:6px;margin-left:-8px}
+.g-head .icon{width:auto;min-width:44px;padding:0 10px 0 6px}
+.lvls{display:grid;gap:12px}
+.lvl{display:flex;align-items:center;gap:14px;text-align:left;width:100%;min-height:78px;padding:12px 16px;border-radius:20px;border:1.5px solid var(--card-line);background:var(--card);cursor:pointer;transition:transform .12s}
+.lvl:active{transform:scale(.98)}
+.lvl .no{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font:800 19px var(--f-display);background:rgba(255,211,110,.16);border:1.5px solid var(--gold);color:var(--gold)}
+.lvl .nm{display:block;font:700 18px/1.2 var(--f-display)}
+.lvl .sb{display:block;margin-top:2px;font-size:13px;color:var(--mist)}
+.lvl .st{margin-left:auto;display:flex;gap:1px;flex:none}
+.mstar{width:20px;height:20px;color:var(--dim-star)}.mstar.on{color:var(--gold);filter:drop-shadow(0 0 4px rgba(255,211,110,.8))}
+.g-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.g-top h2{font-size:21px}
+.g-prog{font:800 13px var(--f-body);color:var(--gold);white-space:nowrap}
+.tlist{list-style:none;margin:0;padding:0}
+.srow{display:grid;grid-template-columns:46px 1fr;gap:12px;align-items:center;min-height:64px;position:relative;padding:5px 0}
+.srow::before{content:"";position:absolute;left:22px;top:0;bottom:0;width:3px;background:var(--line);transition:background .4s}
+.srow:first-child::before{top:50%}.srow:last-child::before{bottom:50%}
+.srow.on::before{background:var(--gold)}
+.srow .bd{position:relative;z-index:1;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--bead);border:1.5px solid var(--bead-hi);font:800 17px var(--f-display);color:var(--mist);transition:background .4s,box-shadow .4s,border-color .4s}
+.srow .bd svg{display:none;width:28px;height:28px}
+.srow.cur .bd{border-color:var(--gold);animation:gpulse 1.6s ease-in-out infinite}
+@keyframes gpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,211,110,.55)}50%{box-shadow:0 0 0 9px rgba(255,211,110,0)}}
+.srow.on .bd{background:radial-gradient(circle at 35% 30%,#fff3c4,#ffd36e 52%,#e0902a);border-color:var(--gold);color:var(--ink);box-shadow:0 0 18px rgba(255,211,110,.75);animation:gpop .7s ease}
+@keyframes gpop{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.srow.on .bd svg{display:block}.srow.on .bd .n{display:none}
+.srow .tt{font:800 16px/1.25 var(--f-body);color:var(--mist)}
+.srow.on .tt{color:var(--gold)}
+.srow .dd{display:block;font-size:14px;line-height:1.4;color:var(--pearl);max-height:0;opacity:0;overflow:hidden;transition:max-height .5s,opacity .5s}
+.srow.on .dd{max-height:90px;opacity:1;margin-top:2px}
+.tray{position:sticky;bottom:0;z-index:15;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:26px 0 max(14px,env(safe-area-inset-bottom,0px));background:rgba(7,15,38,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);-webkit-mask-image:linear-gradient(180deg,transparent,#000 22px);mask-image:linear-gradient(180deg,transparent,#000 22px)}
+.piece{display:flex;align-items:center;gap:10px;min-height:60px;padding:8px 12px;border-radius:16px;border:1.5px solid var(--card-line);background:rgba(18,40,90,.9);text-align:left;font:700 14.5px/1.2 var(--f-body);cursor:pointer;transition:transform .12s,opacity .35s}
+.piece:active{transform:scale(.97)}
+.piece svg{width:30px;height:30px;flex:none;color:var(--gold)}
+.piece.shake{animation:shake .45s}
+.piece.hint{border-color:var(--gold);box-shadow:0 0 0 2px rgba(255,211,110,.45),0 0 22px rgba(255,211,110,.5)}
+.piece[hidden]{display:none}
+.piece.gone{opacity:0;transform:scale(.8);pointer-events:none}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .sky i{animation:none}
@@ -263,6 +304,7 @@ input[type=text]::placeholder{color:#7f92c4}
       <p class="small">Tu intención se queda en tu pantalla. No se guarda ni se envía a nadie.</p>
     </div>
     <button class="btn" id="btnStart" type="button">Empezar</button>
+    <button class="btn ghost" id="btnGame" type="button">Juega: ordena el rosario</button>
     <details class="tests">
       <summary>Atajos de prueba</summary>
       <div class="chips" id="shortcuts">
@@ -374,6 +416,47 @@ input[type=text]::placeholder{color:#7f92c4}
       <p class="small" id="finCounts"></p>
       <p class="intent" id="finIntent"></p>
       <button class="btn wide" id="btnHome" type="button">Volver al inicio</button>
+    </div>
+  </section>
+
+  <!-- JUEGO: ORDENA EL ROSARIO -->
+  <section class="screen" id="s-juego" hidden>
+    <header class="g-head">
+      <button class="icon" id="gBack" type="button" aria-label="Volver">
+        <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><span class="exit-label" id="gBackLbl">Inicio</span>
+      </button>
+    </header>
+
+    <div id="jMenu">
+      <div class="screen" style="animation:none">
+        <p class="eyebrow">Juego</p>
+        <h2 class="title" data-focus tabindex="-1">Ordena el rosario</h2>
+        <div class="guide">
+          <div class="lucero" data-lucero></div>
+          <p class="bubble">¡Vamos a armar un rosario juntos! Toca las piezas en el orden en que se rezan. Si te equivocas, no pasa nada.</p>
+        </div>
+        <div class="lvls" id="lvls"></div>
+      </div>
+    </div>
+
+    <div id="jPlay" hidden>
+      <div class="screen" style="animation:none">
+        <div class="g-top"><h2 id="gTitle"></h2><span class="g-prog" id="gProg"></span></div>
+        <div class="guide">
+          <div class="lucero" data-lucero style="width:52px"></div>
+          <p class="bubble" id="gBubble"></p>
+        </div>
+        <ol class="tlist" id="tlist"></ol>
+        <div class="card done" id="gDone" hidden>
+          <h2 id="gDoneT" tabindex="-1"></h2>
+          <div class="chips" id="gStars" aria-hidden="true" style="gap:2px"></div>
+          <p id="gDoneP"></p>
+          <button class="btn wide" id="gNext" type="button">Siguiente nivel</button>
+          <button class="btn wide ghost" id="gAgain" type="button">Jugar otra vez</button>
+          <button class="link" id="gLevels" type="button">Volver a los niveles</button>
+        </div>
+        <div class="tray" id="tray" role="group" aria-label="Piezas del rosario"></div>
+      </div>
     </div>
   </section>
 
@@ -564,7 +647,7 @@ setMuted(state.muted);
 $('#btnMute').addEventListener('click',()=>{setMuted(!state.muted);if(!state.muted){audio();tone(659.25,0,.8,.06)}});
 
 /* ================= NAVEGACIÓN ================= */
-const screens={inicio:$('#s-inicio'),misterio:$('#s-misterio'),rezo:$('#s-rezo'),final:$('#s-final')};
+const screens={inicio:$('#s-inicio'),misterio:$('#s-misterio'),rezo:$('#s-rezo'),final:$('#s-final'),juego:$('#s-juego')};
 function go(n){
   Object.keys(screens).forEach(k=>{screens[k].hidden=k!==n});
   window.scrollTo(0,0);
@@ -1056,6 +1139,119 @@ function playFinal(){
     await w(500); showFinMsg();
   });
 }
+
+/* ================= JUEGO: ORDENA EL ROSARIO ================= */
+const IC={
+  cruz:'<path d="M20 5v30M11 14h18" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>',
+  pn:'<circle cx="20" cy="20" r="12" fill="currentColor"/><ellipse cx="16" cy="15" rx="4" ry="2.6" fill="#fff" opacity=".45"/>',
+  am3:'<circle cx="12" cy="27" r="7" fill="currentColor"/><circle cx="28" cy="27" r="7" fill="currentColor"/><circle cx="20" cy="12" r="7" fill="currentColor"/>',
+  am10:(function(){let h='';for(let i=0;i<10;i++){const a=i/10*Math.PI*2-Math.PI/2;h+='<circle cx="'+(20+14*Math.cos(a)).toFixed(1)+'" cy="'+(20+14*Math.sin(a)).toFixed(1)+'" r="3.4" fill="currentColor"/>'}return h})(),
+  gl:'<circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="20" cy="14" r="3" fill="currentColor"/><circle cx="14" cy="24" r="3" fill="currentColor"/><circle cx="26" cy="24" r="3" fill="currentColor"/>',
+  med:'<circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="3"/><path d="M20 12v16M13 18h14" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>',
+  star:'<use href="#star" x="3" y="3" width="34" height="34"/>',
+  heart:'<path d="M20 34C8 25 5 15 11 11c4-2.6 7.500 0 9 3.500 1.500-3.500 5-6.100 9-3.500 6 4 3 14-9 23z" fill="currentColor"/>',
+  book:'<rect x="9" y="7" width="22" height="27" rx="3.500" fill="none" stroke="currentColor" stroke-width="3"/><path d="M14 15h12M14 21h12M14 27h7" stroke="currentColor" stroke-width="2.600" stroke-linecap="round"/>',
+  ini:'<path d="M20 4v8M16 7h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="17" r="4" fill="currentColor"/><circle cx="20" cy="26" r="3" fill="currentColor"/><circle cx="20" cy="33" r="3" fill="currentColor"/>',
+  dec:(function(){let h='';for(let i=0;i<5;i++){const a=i/5*Math.PI*2-Math.PI/2;h+='<circle cx="'+(20+12.5*Math.cos(a)).toFixed(1)+'" cy="'+(20+12.5*Math.sin(a)).toFixed(1)+'" r="5" fill="currentColor"/>'}return h})(),
+  crown:'<path d="M7 30L9 13l8 8 3-11 3 11 8-8 2 17z" fill="currentColor"/>'
+};
+function icon(k){return '<svg viewBox="0 0 40 40" aria-hidden="true">'+IC[k]+'</svg>'}
+const LEVELS=[
+  {n:'El inicio del rosario',sb:'Crucifijo y las primeras cuentas',intro:'Empezamos por la colita del rosario. ¿Con qué pieza empezamos a rezar?',p:[
+    {k:'c1',ic:'cruz',t:'Crucifijo',d:'Aquí nos persignamos y rezamos el Credo.'},
+    {k:'c2',ic:'pn',t:'Cuenta grande · Padre Nuestro',d:'Una cuenta grande: rezamos el Padre Nuestro.'},
+    {k:'c3',ic:'am3',t:'Tres cuentas · Ave Marías',d:'Tres Ave Marías: por la fe, la esperanza y el amor.'},
+    {k:'c4',ic:'gl',t:'Cuenta del Gloria',d:'Alabamos a Dios con el Gloria.'},
+    {k:'c5',ic:'med',t:'Medalla',d:'Une la colita con las cinco decenas. Desde aquí empieza el primer misterio.'}]},
+  {n:'Una decena',sb:'Lo que rezamos en cada misterio',intro:'Ahora armamos una decena, que se repite en cada misterio. ¿Qué hacemos primero?',p:[
+    {k:'d1',ic:'star',t:'Anuncio del misterio',d:'Decimos cuál es el misterio y pensamos en él.'},
+    {k:'d2',ic:'pn',t:'Cuenta grande · Padre Nuestro',d:'La cuenta grande abre la decena con el Padre Nuestro.'},
+    {k:'d3',ic:'am10',t:'Diez cuentas · Ave Marías',d:'Diez Ave Marías, una por cada cuenta que se enciende.'},
+    {k:'d4',ic:'gl',t:'Cuenta del Gloria',d:'Rezamos el Gloria.'},
+    {k:'d5',ic:'heart',t:'Jaculatorias',d:'«Oh Jesús mío…» y «El Rosario de María nos libre de todo mal».'}]},
+  {n:'El rosario completo',sb:'Desde la señal de la cruz hasta la oración final',intro:'¡Nivel de campeones! Ordena todo el rosario, de principio a fin. Tú puedes.',p:[
+    {k:'r1',ic:'cruz',t:'Señal de la cruz',d:'Empezamos persignándonos.'},
+    {k:'r2',ic:'book',t:'Credo',d:'Decimos en qué creemos.'},
+    {k:'r3',ic:'ini',t:'Cuentas del inicio',d:'Padre Nuestro, tres Ave Marías y Gloria.'},
+    {k:'r4',ic:'dec',t:'Cinco decenas',d:'Cinco misterios, cada uno con su estrella.'},
+    {k:'r5',ic:'crown',t:'Salve',d:'Saludamos a María como Reina y Madre.'},
+    {k:'r6',ic:'heart',t:'Jaculatorias finales',d:'Pequeñas oraciones como flechas de amor al cielo.'},
+    {k:'r7',ic:'star',t:'Oración final',d:'Damos gracias y terminamos el rosario.'}]}
+];
+const G_OK=['¡Muy bien! Esa va aquí.','¡Eso es! Mira cómo se enciende.','¡Perfecto! Vas muy bien.','¡Qué bien lo haces!','¡Correcto! Una cuenta más de luz.'];
+const G_NO=['Casi. Esa va más adelante, prueba con otra.','¡Buen intento! Esa viene después. ¿Probamos otra?','Todavía no le toca. ¡Tú puedes!'];
+let G=null;
+function gBubble(t){const b=$('#gBubble');b.textContent=t;b.style.animation='none';void b.offsetWidth;b.style.animation='';$('#live').textContent=t}
+function bestStars(i){return Math.min(3,Math.max(0,parseInt(store.get('rl-ord-'+i)||'0',10)||0))}
+function starsHTML(n){let h='';for(let i=0;i<3;i++)h+='<svg class="mstar'+(i<n?' on':'')+'" viewBox="0 0 100 100"><use href="#star"/></svg>';return h}
+function gMenu(){
+  $('#jMenu').hidden=false;$('#jPlay').hidden=true;$('#gBackLbl').textContent='Inicio';G=null;
+  $('#lvls').innerHTML=LEVELS.map((l,i)=>'<button type="button" class="lvl" data-i="'+i+'"><span class="no">'+(i+1)+'</span><span><span class="nm">'+esc(l.n)+'</span><span class="sb">'+esc(l.sb)+'</span></span><span class="st" aria-label="'+bestStars(i)+' de 3 estrellas">'+starsHTML(bestStars(i))+'</span></button>').join('');
+  window.scrollTo(0,0);
+}
+function shuffled(a){
+  let b;do{b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}}while(b.every((x,i)=>x===a[i]));
+  return b;
+}
+function gLevel(i){
+  const L=LEVELS[i];
+  G={i:i,order:L.p,placed:0,wrong:0,miss:0};
+  $('#jMenu').hidden=true;$('#jPlay').hidden=false;$('#gBackLbl').textContent='Niveles';
+  $('#gTitle').textContent='Nivel '+(i+1)+' · '+L.n;
+  $('#tlist').innerHTML=L.p.map((p,k)=>'<li class="srow'+(k===0?' cur':'')+'" data-k="'+p.k+'"><span class="bd"><span class="n">'+(k+1)+'</span>'+icon(p.ic)+'</span><span class="tx"><span class="tt">¿Qué va aquí?</span><span class="dd"></span></span></li>').join('');
+  $('#tray').innerHTML=shuffled(L.p).map(p=>'<button type="button" class="piece" data-k="'+p.k+'">'+icon(p.ic)+'<span>'+esc(p.t)+'</span></button>').join('');
+  $('#tray').hidden=false;$('#gDone').hidden=true;
+  gProg();gBubble(L.intro);window.scrollTo(0,0);
+}
+function gProg(){$('#gProg').textContent=G.placed+' de '+G.order.length}
+function gPick(btn){
+  if(!G||G.placed>=G.order.length||btn.classList.contains('gone')) return;
+  const want=G.order[G.placed];
+  if(btn.dataset.k===want.k){
+    const row=$$('#tlist .srow')[G.placed];
+    row.classList.remove('cur');row.classList.add('on');
+    $('.tt',row).textContent=want.t;$('.dd',row).textContent=want.d;
+    btn.classList.add('gone');btn.disabled=true;setTimeout(()=>{btn.hidden=true},380);
+    $$('#tray .piece.hint').forEach(b=>b.classList.remove('hint'));
+    const f=PENT[G.placed%10];tone(f,0,1.2,.07);tone(f*2,0,.8,.025);buzz();
+    G.placed++;G.wrong=0;gProg();
+    if(G.placed<G.order.length){
+      const nx=$$('#tlist .srow')[G.placed];nx.classList.add('cur');
+      gBubble(G_OK[(G.placed-1)%G_OK.length]);
+      try{nx.scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'})}catch(e){}
+    }else gFinish();
+  }else{
+    G.wrong++;G.miss++;
+    btn.classList.remove('shake');void btn.offsetWidth;btn.classList.add('shake');
+    tone(220,0,.5,.05,'triangle');
+    if(G.wrong>=2){
+      const ok=$('#tray .piece[data-k="'+want.k+'"]');
+      if(ok) ok.classList.add('hint');
+      gBubble('Te ayudo un poquito: la pieza que brilla es la que sigue.');
+    }else gBubble(G_NO[G.miss%G_NO.length]);
+  }
+}
+function gFinish(){
+  const stars=G.miss===0?3:(G.miss<=3?2:1);
+  if(stars>bestStars(G.i)) store.set('rl-ord-'+G.i,String(stars));
+  $('#tray').hidden=true;
+  gBubble(G.miss===0?'¡Perfecto! Lo armaste sin errores.':'¡Lo lograste! Armaste el rosario.');
+  doneChime();
+  const d=$('#gDone');d.hidden=false;
+  $('#gDoneT').textContent='¡Rosario armado!';
+  $('#gStars').innerHTML=starsHTML(stars);
+  $('#gDoneP').textContent=G.miss===0?'Pusiste todas las piezas en su lugar a la primera. ¡Qué bien conoces el rosario!':'Cada intento ayuda a aprender. Ahora ya sabes en qué orden se reza esta parte.';
+  $('#gNext').hidden=G.i>=LEVELS.length-1;
+  try{$('#gDoneT').scrollIntoView({block:'center',behavior:reduce?'auto':'smooth'});$('#gDoneT').focus({preventScroll:true})}catch(e){}
+}
+$('#btnGame').addEventListener('click',()=>{audio();tone(659.25,0,.8,.05);gMenu();go('juego')});
+$('#lvls').addEventListener('click',e=>{const b=e.target.closest('.lvl');if(b){audio();tone(783.99,0,.7,.05);gLevel(+b.dataset.i)}});
+$('#tray').addEventListener('click',e=>{const b=e.target.closest('.piece');if(b)gPick(b)});
+$('#gBack').addEventListener('click',()=>{if(G)gMenu();else go('inicio')});
+$('#gLevels').addEventListener('click',gMenu);
+$('#gAgain').addEventListener('click',()=>gLevel(G.i));
+$('#gNext').addEventListener('click',()=>gLevel(G.i+1));
+
 $('#finSkip').addEventListener('click',()=>{
   cancelRuns();
   $$('.fline').forEach(l=>{l.style.strokeDashoffset='0'});
