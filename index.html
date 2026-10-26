@@ -1,0 +1,1056 @@
+<title>Rosario de Luz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Concepto: una sola columna pensada para el celular. El rosario se reza por partes:
+   comienzo (crucifijo y cuentas de entrada), cinco decenas (un reloj de 12 cuentas cada una)
+   y cierre (las cinco estrellas forman una cruz). Cielo de amanecer, por los misterios gozosos. */
+:root{
+  --night-900:#070f26; --night-800:#0b1a3b; --night-700:#12285a;
+  --dawn:#f4a259; --gold:#ffd36e; --gold-deep:#f0a63a;
+  --pearl:#eaf0ff; --mist:#a8b8e2; --ink:#241700;
+  --bead:#33477f; --bead-hi:#6a80c4; --dim-star:#4560a6;
+  --line:rgba(168,190,255,.24); --card:rgba(255,255,255,.07); --card-line:rgba(190,210,255,.18);
+  --f-display:'Baloo 2','Trebuchet MS',system-ui,sans-serif;
+  --f-body:'Nunito',system-ui,'Segoe UI',Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-tap-highlight-color:transparent}
+body{
+  margin:0; background:var(--night-900); color:var(--pearl);
+  font:400 16px/1.5 var(--f-body);
+  padding-block:16px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--night-900)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+button{font:inherit;color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* cielo */
+.sky{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(120% 55% at 50% 108%,rgba(244,162,89,.5) 0%,rgba(244,162,89,0) 62%),
+    linear-gradient(180deg,var(--night-900) 0%,var(--night-800) 55%,var(--night-700) 100%)}
+.sky i{position:absolute;border-radius:50%;background:#fff;opacity:.6;animation:tw var(--t,3s) var(--d,0s) ease-in-out infinite alternate}
+@keyframes tw{from{opacity:.12}to{opacity:.95}}
+
+.app{position:relative;z-index:1;max-width:480px;margin:0 auto;overflow-x:clip}
+.screen{display:flex;flex-direction:column;gap:18px;animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* tipografía */
+h1,h2{margin:0;font-family:var(--f-display);font-weight:700;text-wrap:balance}
+h1{font-size:clamp(40px,12vw,52px);line-height:1}
+h1 em{font-style:normal;color:var(--gold)}
+h2{font-size:22px;line-height:1.2}
+h2.title{font-size:clamp(32px,9vw,40px);line-height:1.05}
+p{margin:0}
+.lead{font-size:17px;color:var(--pearl)}
+.eyebrow{font:800 12px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.small{font-size:13px;color:var(--mist)}
+.lbl{font:800 12px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--mist)}
+
+/* botones */
+.btn{font:700 20px/1 var(--f-display);min-height:58px;padding:0 30px;border:0;border-radius:999px;cursor:pointer;
+  background:linear-gradient(180deg,#ffe493,#f6b94a);color:var(--ink);
+  box-shadow:0 8px 28px rgba(246,185,74,.35),inset 0 1px 0 rgba(255,255,255,.6);transition:transform .12s}
+.btn:active{transform:scale(.97)}
+.btn.wide{width:100%}
+.btn.ready{animation:ready 1.4s ease-in-out infinite}
+@keyframes ready{0%,100%{box-shadow:0 8px 28px rgba(246,185,74,.35)}50%{box-shadow:0 8px 40px rgba(255,211,110,.85)}}
+.link{min-height:44px;background:none;border:0;padding:0 12px;color:var(--mist);text-decoration:underline;text-underline-offset:3px;font-weight:700;cursor:pointer}
+.icon{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;gap:4px;border:0;border-radius:14px;background:transparent;cursor:pointer;color:var(--pearl)}
+.icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon .exit-label{font:700 13px/1 var(--f-body);color:var(--gold)}
+#btnExit{width:auto;min-width:44px;justify-self:start}
+#btnMute{justify-self:end}
+#btnMute .off{display:none}
+#btnMute[aria-pressed="true"] .on{display:none}
+#btnMute[aria-pressed="true"] .off{display:block}
+
+/* inicio */
+.guide{display:flex;align-items:center;gap:12px}
+.lucero{width:60px;flex:none;animation:float 3.4s ease-in-out infinite}
+.lucero svg{display:block;width:100%;height:auto;overflow:visible}
+.lucero .lbody{color:var(--gold)}
+.lucero .wing{fill:rgba(234,240,255,.88)}
+.lucero .eye{fill:var(--ink)} .lucero .smile{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.lucero .cheek{fill:#ff8f7e;opacity:.55}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.bubble{padding:10px 14px;border-radius:18px 18px 18px 6px;background:rgba(255,255,255,.1);border:1px solid var(--card-line);font:700 15px/1.35 var(--f-body);animation:pop .35s ease both}
+@keyframes pop{from{transform:scale(.96);opacity:.4}to{transform:none;opacity:1}}
+.panel{display:flex;flex-direction:column;gap:14px;padding:18px;border-radius:22px;background:var(--card);border:1px solid var(--card-line)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid var(--card-line);background:rgba(255,255,255,.05);font-weight:700;font-size:15px;cursor:pointer}
+.chip[aria-checked="true"]{background:rgba(255,211,110,.18);border-color:var(--gold);color:#fff}
+input[type=text]{width:100%;min-height:48px;padding:0 14px;border-radius:14px;border:1.5px solid var(--card-line);background:rgba(5,10,28,.45);color:var(--pearl);font:600 16px var(--f-body)}
+input[type=text]::placeholder{color:#7f92c4}
+.tests{border:1px dashed var(--card-line);border-radius:16px;padding:4px 14px}
+.tests summary{min-height:44px;display:flex;align-items:center;font-weight:700;color:var(--mist);cursor:pointer}
+.tests .chips{padding-bottom:12px}
+.tests .chip{min-height:40px;font-size:14px;padding:0 12px}
+
+/* misterio */
+.art{border-radius:22px;overflow:hidden;border:1px solid var(--card-line);background:radial-gradient(90% 90% at 50% 100%,rgba(244,162,89,.35),rgba(244,162,89,0)),rgba(255,255,255,.04)}
+.art svg{display:block;width:100%;height:auto;max-height:210px}
+.facts{margin:0;display:grid;gap:10px}
+.facts div{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:baseline}
+.facts dt{font:800 12px/1.3 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.facts dd{margin:0}
+.think{font:700 17px/1.4 var(--f-body);padding-left:14px;border-left:3px solid var(--gold)}
+
+/* rezo */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;padding:6px 8px;border-radius:20px;background:rgba(8,16,40,.88);border:1px solid var(--card-line)}
+.slots{display:flex;gap:7px}
+.slot{width:30px;height:30px;color:var(--dim-star);border-radius:50%;transition:color .4s}
+.slot svg{display:block;width:100%;height:100%}
+.slot.cur{outline:1.5px dashed rgba(255,211,110,.55);outline-offset:3px}
+.slot.lit{color:var(--gold);outline:0;filter:drop-shadow(0 0 6px rgba(255,211,110,.9));animation:slotpop .8s ease}
+@keyframes slotpop{0%{transform:scale(.5)}50%{transform:scale(1.5)}100%{transform:scale(1)}}
+.ringwrap{width:min(100%,310px);margin:0 auto}
+.ringwrap svg{display:block;width:100%;height:auto;overflow:visible;animation:ringin .6s ease both}
+@keyframes ringin{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.thread{fill:none;stroke:var(--line);stroke-width:3}
+.thread-lit{fill:none;stroke:var(--gold);stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset .7s ease;filter:drop-shadow(0 0 4px rgba(255,211,110,.8))}
+.glows circle{opacity:0;transition:opacity .45s}
+.glows circle.on{opacity:1}
+.bead .base{fill:var(--bead);stroke:var(--bead-hi);stroke-width:1.5;transition:fill .3s}
+.bead .fill{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.4);transition:opacity .3s,transform .55s cubic-bezier(.3,1.7,.5,1)}
+.bead.lit .fill{opacity:1;transform:scale(1)}
+.bead .shine{fill:#fff;opacity:.38}
+.bead .mark{fill:none;stroke:rgba(255,255,255,.6);stroke-width:2.2;stroke-linecap:round;transition:stroke .3s}
+.bead .markdot{fill:rgba(255,255,255,.6);transition:fill .3s}
+.bead.lit .mark{stroke:rgba(36,23,0,.7)} .bead.lit .markdot{fill:rgba(36,23,0,.7)}
+.bead .halo{fill:none;stroke:var(--gold);stroke-width:2.5;opacity:0;transform-box:fill-box;transform-origin:center}
+.bead.current .halo{opacity:1;animation:halo 1.6s ease-in-out infinite}
+.bead.current .base{fill:#465fa6}
+@keyframes halo{0%,100%{transform:scale(.92);opacity:.95}50%{transform:scale(1.2);opacity:.3}}
+.bead .hit{fill:transparent;pointer-events:none}
+.bead.current .hit{pointer-events:all;cursor:pointer}
+.ring-lbl{font:800 13px var(--f-body);fill:var(--mist);letter-spacing:.03em;transition:fill .3s}
+.ring-lbl.on{fill:var(--gold)}
+.ring-lbl.now{fill:#fff}
+.chk circle{fill:var(--bead);stroke:var(--bead-hi);stroke-width:1.5;transition:fill .3s}
+.chk text{font:700 12.5px var(--f-body);fill:var(--mist);transition:fill .3s}
+.chk.on circle{fill:var(--gold);stroke:var(--gold)}
+.chk.on text{fill:var(--gold)}
+.chk.now text{fill:#fff}
+.chk.now circle{stroke:var(--gold)}
+#orbGlow{opacity:0;transition:opacity .9s}
+#orbStar{transform-box:fill-box;transform-origin:center;transition:transform .9s cubic-bezier(.3,1.4,.5,1)}
+.orb-dim{color:var(--dim-star)}
+.orb-gold{color:var(--gold);opacity:0;transition:opacity .9s;filter:drop-shadow(0 0 8px rgba(255,211,110,.8))}
+.orb-num{font:800 30px var(--f-display);fill:var(--pearl)}
+.orb-cap{font:700 12px var(--f-body);fill:var(--mist)}
+.cbase{stroke:var(--line);stroke-width:2.5;stroke-linecap:round}
+.cline{stroke:var(--gold);stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .9s ease;filter:drop-shadow(0 0 4px rgba(255,211,110,.8))}
+
+.card{padding:18px;border-radius:22px;background:var(--card);border:1px solid var(--card-line);display:flex;flex-direction:column;gap:14px}
+.pmeta{font:700 14px/1.2 var(--f-body);color:var(--mist)}
+.plabel{font:800 12px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.ptext{font:600 clamp(17px,4.7vw,19px)/1.6 var(--f-body)}
+.ptext[data-k="long"]{font-size:clamp(16px,4.3vw,17.5px);line-height:1.55}
+.sep{display:flex;align-items:center;gap:10px;margin:12px 0 10px;color:var(--gold);opacity:.85}.sep i{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,211,110,.55),transparent)}.sep b{font-size:13px;font-weight:400}
+.w{border-radius:6px;padding:1px 2px;transition:color .25s,background-color .25s}
+.w.cur{background:rgba(255,211,110,.28);color:#fff}
+.w.done{color:var(--gold)}
+.howto{display:flex;gap:14px;align-items:center;padding:12px;border-radius:16px;background:rgba(5,10,28,.5)}
+.howsvg{width:96px;flex:none;display:block}
+.howsvg .hd,.howsvg .bd{fill:rgba(168,190,255,.16);stroke:rgba(168,190,255,.4);stroke-width:2}
+.howsvg .eye{fill:rgba(168,190,255,.55)}
+.howsvg .sh{font:800 11px var(--f-body);fill:var(--mist)}
+.howsvg .cr{fill:none;stroke:var(--gold);stroke-width:6;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;opacity:0;filter:drop-shadow(0 0 3px rgba(255,211,110,.8))}
+.howsvg .sm{fill:none;stroke:var(--gold);stroke-width:3.4;stroke-linecap:round;opacity:0;transform-box:fill-box;transform-origin:center;filter:drop-shadow(0 0 3px rgba(255,211,110,.9))}
+/* modo completo: tres cruces pequeñas y luego la cruz grande (9 s) */
+.howto[data-kind="full"] .sm1{animation:sm1 9s ease-in-out infinite}
+.howto[data-kind="full"] .sm2{animation:sm2 9s ease-in-out infinite}
+.howto[data-kind="full"] .sm3{animation:sm3 9s ease-in-out infinite}
+.howto[data-kind="full"] .cr1{animation:fullA 9s ease-in-out infinite}
+.howto[data-kind="full"] .cr2{animation:fullB 9s ease-in-out infinite}
+@keyframes sm1{0%,3%{opacity:0;transform:scale(.4)}8%{opacity:1;transform:scale(1.4)}12%,40%{opacity:1;transform:scale(1)}46%,100%{opacity:0;transform:scale(1)}}
+@keyframes sm2{0%,14%{opacity:0;transform:scale(.4)}19%{opacity:1;transform:scale(1.4)}23%,40%{opacity:1;transform:scale(1)}46%,100%{opacity:0;transform:scale(1)}}
+@keyframes sm3{0%,25%{opacity:0;transform:scale(.4)}30%{opacity:1;transform:scale(1.4)}34%,40%{opacity:1;transform:scale(1)}46%,100%{opacity:0;transform:scale(1)}}
+@keyframes fullA{0%,50%{stroke-dashoffset:100;opacity:1}66%,92%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes fullB{0%,68%{stroke-dashoffset:100;opacity:1}80%,92%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+/* modo solo cruz grande (5,5 s) */
+.howto[data-kind="big"] .cr1{animation:bigA 5.5s ease-in-out infinite}
+.howto[data-kind="big"] .cr2{animation:bigB 5.5s ease-in-out infinite}
+@keyframes bigA{0%,6%{stroke-dashoffset:100;opacity:1}32%,88%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes bigB{0%,36%{stroke-dashoffset:100;opacity:1}60%,88%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+.howto[data-kind="big"] .only-full{display:none}
+.howto ol{margin:0;padding-left:18px;font-size:14px;line-height:1.4;display:grid;gap:6px}
+.howto b{color:var(--gold)}
+.voicerow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.voicerow select{flex:1;min-width:0;min-height:44px;padding:0 10px;border-radius:14px;border:1.5px solid var(--card-line);background:rgba(5,10,28,.6);color:var(--pearl);font:600 15px var(--f-body)}
+.voicerow .chip{min-height:44px}
+.seg{display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(5,10,28,.5)}
+.seg button{flex:1;min-height:44px;border:0;border-radius:999px;background:transparent;color:var(--mist);font:700 14px var(--f-body);cursor:pointer}
+.seg button[aria-checked="true"]{background:rgba(255,211,110,.2);color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold)}
+.done h2{color:var(--gold)}
+.actionbar{position:sticky;bottom:0;z-index:15;margin-top:auto;padding:14px 0 max(14px,env(safe-area-inset-bottom,0px));background:linear-gradient(0deg,rgba(7,15,38,.95) 62%,rgba(7,15,38,0))}
+
+.flyer{position:fixed;z-index:50;pointer-events:none;color:var(--gold);filter:drop-shadow(0 0 12px rgba(255,211,110,.95));will-change:transform}
+.flyer svg{display:block;width:100%;height:100%}
+.spark{position:fixed;z-index:49;pointer-events:none;width:7px;height:7px;border-radius:50%;background:#ffe9a8;margin:-3px 0 0 -3px}
+
+/* final */
+.screen.final{display:block;position:relative;height:calc(100vh - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));height:calc(100dvh - 32px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:560px}
+.stage{position:absolute;inset:0;width:100%;height:100%;overflow:hidden}
+.fstar{color:var(--dim-star);transform-box:fill-box;transform-origin:center;transition:color .4s}
+.fstar.lit{color:var(--gold);filter:drop-shadow(0 0 8px rgba(255,211,110,.95));animation:fpop .9s ease}
+@keyframes fpop{0%{transform:scale(.5)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+.flare .fstar.lit{animation:flare 1.5s ease}
+@keyframes flare{0%,100%{transform:scale(1)}40%{transform:scale(1.35)}}
+.fline{stroke:var(--gold);stroke-width:2;stroke-linecap:round;opacity:.85;transition:stroke-dashoffset 1s ease}
+#finGlow{opacity:0;transition:opacity 1.6s}
+.lan-text{font:700 13px var(--f-body);fill:#fff}
+.fin-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tag{font:800 11px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:8px 12px;border-radius:999px;background:rgba(8,16,40,.7);border:1px solid var(--card-line)}
+.fin-msg{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;padding:48px 0 0;background:linear-gradient(0deg,rgba(7,15,38,.95) 60%,rgba(7,15,38,0));opacity:0;pointer-events:none;transition:opacity 1.2s}
+.fin-msg.show{opacity:1;pointer-events:auto}
+.fin-msg h2{font-size:30px;color:var(--gold)}
+.intent{font:800 15px var(--f-body);padding:8px 16px;border-radius:999px;background:rgba(255,211,110,.16);border:1px solid rgba(255,211,110,.5)}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .sky i{animation:none}
+  .howsvg .cr,.howsvg .sm{stroke-dashoffset:0;opacity:1}
+}
+</style>
+
+<div class="sky" aria-hidden="true"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="star" viewBox="0 0 100 100"><path d="M50 10L59.99 36.25L88.04 37.64L66.17 55.25L73.51 82.36L50 67L26.49 82.36L33.83 55.25L11.96 37.64L40.01 36.25Z" fill="currentColor" stroke="currentColor" stroke-width="6" stroke-linejoin="round"/></symbol>
+    <radialGradient id="glowGrad"><stop offset="0" stop-color="#ffd36e" stop-opacity=".62"/><stop offset=".55" stop-color="#ffd36e" stop-opacity=".16"/><stop offset="1" stop-color="#ffd36e" stop-opacity="0"/></radialGradient>
+    <radialGradient id="goldBead" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff3c4"/><stop offset=".5" stop-color="#ffd36e"/><stop offset="1" stop-color="#e0902a"/></radialGradient>
+  </defs>
+</svg>
+
+<main class="app">
+
+  <!-- INICIO -->
+  <section class="screen" id="s-inicio">
+    <p class="eyebrow">Prototipo · rosario completo</p>
+    <h1 data-focus tabindex="-1">Rosario de <em>Luz</em></h1>
+    <p class="lead">Cada Ave María enciende una cuenta, cada misterio enciende una estrella y al final tu oración sube al cielo.</p>
+    <div class="guide">
+      <div class="lucero" data-lucero></div>
+      <p class="bubble">¡Hola! Soy Lucero. Rezamos juntos, a tu ritmo, desde la señal de la cruz hasta el final.</p>
+    </div>
+    <div class="panel">
+      <h2>¿Por quién quieres rezar hoy?</h2>
+      <div class="chips" id="chips" role="radiogroup" aria-label="Intención de la oración"></div>
+      <label class="lbl" for="custom">O escribe la tuya</label>
+      <input id="custom" type="text" maxlength="40" autocomplete="off" placeholder="Por mi abuelito…">
+      <p class="small">Tu intención se queda en tu pantalla. No se guarda ni se envía a nadie.</p>
+    </div>
+    <button class="btn" id="btnStart" type="button">Empezar</button>
+    <details class="tests">
+      <summary>Atajos de prueba</summary>
+      <div class="chips" id="shortcuts">
+        <button type="button" class="chip" data-go="0">Comienzo</button>
+        <button type="button" class="chip" data-go="1">Misterio 1</button>
+        <button type="button" class="chip" data-go="2">Misterio 2</button>
+        <button type="button" class="chip" data-go="3">Misterio 3</button>
+        <button type="button" class="chip" data-go="4">Misterio 4</button>
+        <button type="button" class="chip" data-go="5">Misterio 5</button>
+        <button type="button" class="chip" data-go="6">Cierre</button>
+        <button type="button" class="chip" data-go="final">Gran final</button>
+      </div>
+    </details>
+  </section>
+
+  <!-- ANUNCIO DEL MISTERIO -->
+  <section class="screen" id="s-misterio" hidden>
+    <p class="eyebrow" id="mOrd"></p>
+    <h2 class="title" id="mName" data-focus tabindex="-1"></h2>
+    <div class="art" id="mArt"></div>
+    <p id="mStory"></p>
+    <dl class="facts">
+      <div><dt>Fruto</dt><dd id="mFruit"></dd></div>
+      <div><dt>En la Biblia</dt><dd id="mRef"></dd></div>
+    </dl>
+    <p class="think" id="mThink"></p>
+    <button class="btn" id="btnPray" type="button">Vamos a rezar</button>
+  </section>
+
+  <!-- REZO -->
+  <section class="screen" id="s-rezo" hidden>
+    <header class="bar">
+      <button class="icon" id="btnExit" type="button" aria-label="Salir al inicio">
+        <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><span class="exit-label" id="exitLabel" hidden>¿Salir?</span>
+      </button>
+      <div class="slots" id="slots" role="group" aria-label="Los cinco misterios"></div>
+      <button class="icon" id="btnMute" type="button" aria-pressed="false" aria-label="Silenciar sonidos">
+        <svg class="on" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg>
+        <svg class="off" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg>
+      </button>
+    </header>
+
+    <div class="guide">
+      <div class="lucero" data-lucero style="width:52px"></div>
+      <p class="bubble" id="bubble"></p>
+    </div>
+
+    <div class="ringwrap">
+      <svg id="ring" viewBox="0 0 360 360" role="img" aria-label="Las cuentas del rosario"></svg>
+    </div>
+
+    <div class="card" id="prayCard">
+      <p class="pmeta" id="pMeta"></p>
+      <p class="plabel" id="pLabel"></p>
+      <p class="ptext" id="pText"></p>
+      <div class="howto" id="howto" data-kind="full" hidden>
+        <svg class="howsvg" viewBox="0 0 120 180" aria-hidden="true">
+          <circle class="hd" cx="60" cy="38" r="20"/>
+          <circle class="eye" cx="53" cy="38" r="1.8"/><circle class="eye" cx="67" cy="38" r="1.8"/>
+          <path class="bd" d="M8 180Q8 84 60 74Q112 84 112 180Z"/>
+          <path class="cr cr1" d="M60 18V168" pathLength="100"/>
+          <path class="cr cr2" d="M98 82H22" pathLength="100"/>
+          <text class="sh" x="94" y="102" text-anchor="end">izq.</text><text class="sh" x="26" y="102">der.</text>
+          <path class="sm sm1" d="M60 21V30M56.5 24H63.5"/>
+          <path class="sm sm2" d="M60 44V53M56.5 47H63.5"/>
+          <path class="sm sm3" d="M60 96V108M55 100H65"/>
+        </svg>
+        <ol>
+          <li class="only-full"><b>Por la señal de la santa cruz:</b> tres cruces pequeñas con el pulgar. Una en la frente, otra en la boca y otra en el pecho.</li>
+          <li><b>En el nombre del Padre, del Hijo y del Espíritu Santo:</b> la cruz grande. De la frente al pecho, y del hombro izquierdo al derecho.</li>
+        </ol>
+      </div>
+      <div class="seg" id="seg" role="radiogroup" aria-label="Cómo quieres rezar">
+        <button type="button" role="radio" data-mode="off" aria-checked="false">Yo solo</button>
+        <button type="button" role="radio" data-mode="read" aria-checked="true">Leer conmigo</button>
+        <button type="button" role="radio" data-mode="listen" aria-checked="false" id="segListen">Escuchar</button>
+      </div>
+      <div class="voicerow" id="voiceRow" hidden>
+        <label class="lbl" for="voiceSel">Voz</label>
+        <select id="voiceSel"></select>
+        <button type="button" class="chip" id="voiceTest">Probar</button>
+      </div>
+      <p class="small" id="voiceHint" hidden>La voz depende de tu teléfono. Si suena robótica, prueba otra de la lista o instala una voz en español de mejor calidad en los ajustes de texto a voz.</p>
+      <button class="link" id="btnUndo" type="button" hidden>Volver a la oración anterior</button>
+    </div>
+
+    <div class="card done" id="doneCard" hidden>
+      <h2 id="doneTitle" data-focus tabindex="-1"></h2>
+      <p id="doneText"></p>
+      <button class="btn wide" id="btnDoneNext" type="button"></button>
+      <p class="small" id="doneNote"></p>
+    </div>
+
+    <div class="actionbar" id="actionbar">
+      <button class="btn wide" id="btnNext" type="button">Ya me persigné</button>
+    </div>
+  </section>
+
+  <!-- GRAN FINAL -->
+  <section class="screen final" id="s-final" hidden>
+    <svg class="stage" id="stage" viewBox="0 0 360 640" aria-hidden="true"></svg>
+    <div class="fin-top">
+      <span class="tag">Rosario completo</span>
+      <button class="link" id="finSkip" type="button">Saltar</button>
+    </div>
+    <div class="fin-msg" id="finMsg">
+      <h2 data-focus tabindex="-1">Tu oración llegó al cielo</h2>
+      <p>Cada Ave María encendió una cuenta, cada misterio una estrella, y tu intención subió con toda esa luz.</p>
+      <p class="small" id="finCounts"></p>
+      <p class="intent" id="finIntent"></p>
+      <button class="btn wide" id="btnHome" type="button">Volver al inicio</button>
+    </div>
+  </section>
+
+</main>
+<div class="sr" id="live" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+const NS='http://www.w3.org/2000/svg';
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+document.documentElement.lang='es';
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const hasTTS=('speechSynthesis' in window)&&('SpeechSynthesisUtterance' in window);
+
+/* ================= DATOS ================= */
+const PRAYERS={
+  sc:'Por la señal de la santa cruz, de nuestros enemigos líbranos, Señor, Dios nuestro. En el nombre del Padre, y del Hijo, y del Espíritu Santo. Amén.',
+  ac:'Señor mío Jesucristo, Dios y hombre verdadero, Creador, Padre y Redentor mío, por ser Tú quien eres, bondad infinita, y porque te amo sobre todas las cosas, me pesa de todo corazón haberte ofendido; propongo firmemente nunca más pecar, confesarme y cumplir la penitencia que me fuere impuesta. Amén.',
+  cr:'Creo en Dios, Padre todopoderoso, Creador del cielo y de la tierra. Creo en Jesucristo, su único Hijo, nuestro Señor, que fue concebido por obra y gracia del Espíritu Santo, nació de santa María Virgen, padeció bajo el poder de Poncio Pilato, fue crucificado, muerto y sepultado, descendió a los infiernos, al tercer día resucitó de entre los muertos, subió a los cielos y está sentado a la derecha de Dios, Padre todopoderoso. Desde allí ha de venir a juzgar a vivos y muertos. Creo en el Espíritu Santo, la santa Iglesia católica, la comunión de los santos, el perdón de los pecados, la resurrección de la carne y la vida eterna. Amén.',
+  pn:'Padre nuestro, que estás en el cielo, santificado sea tu Nombre; venga a nosotros tu reino; hágase tu voluntad en la tierra como en el cielo. Danos hoy nuestro pan de cada día; perdona nuestras ofensas, como también nosotros perdonamos a los que nos ofenden; no nos dejes caer en la tentación, y líbranos del mal. Amén.',
+  am:'Dios te salve, María, llena eres de gracia, el Señor es contigo. Bendita tú eres entre todas las mujeres, y bendito es el fruto de tu vientre, Jesús. Santa María, Madre de Dios, ruega por nosotros, pecadores, ahora y en la hora de nuestra muerte. Amén.',
+  gl:'Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.',
+  fa:'Oh Jesús mío, perdona nuestros pecados, líbranos del fuego del infierno, lleva al cielo a todas las almas, especialmente a las más necesitadas de tu misericordia.¦El Rosario de María nos libre de todo mal, alabemos noche y día a la Reina celestial.',
+  sa:'Dios te salve, Reina y Madre de misericordia, vida, dulzura y esperanza nuestra, Dios te salve. A ti llamamos los desterrados hijos de Eva; a ti suspiramos, gimiendo y llorando en este valle de lágrimas. Ea, pues, Señora, abogada nuestra, vuelve a nosotros esos tus ojos misericordiosos; y después de este destierro, muéstranos a Jesús, fruto bendito de tu vientre. ¡Oh clementísima, oh piadosa, oh dulce Virgen María! Ruega por nosotros, Santa Madre de Dios, para que seamos dignos de alcanzar las promesas de nuestro Señor Jesucristo.',
+  ja:'Dulce Corazón de María, sé la salvación mía. Sagrado Corazón de Jesús, en ti confío. Jesús, José y María, os doy el corazón y el alma mía.',
+  fi:'Oh Dios, cuyo Hijo único, con su vida, muerte y resurrección, nos ha obtenido los premios de la salvación eterna, concédenos, te rogamos, que, meditando estos misterios del Santísimo Rosario de la Bienaventurada Virgen María, imitemos lo que contienen y alcancemos lo que prometen. Por el mismo Cristo nuestro Señor. Amén.',
+  sc2:'En el nombre del Padre, y del Hijo, y del Espíritu Santo. Amén.'
+};
+const LONG=['cr','sa','ac','fi','pn'];
+const INTENTIONS=['Mi familia','Mis amigos','Los enfermos','La paz del mundo'];
+
+const GOZOSOS=[
+ {ord:'Primer misterio gozoso',name:'La Anunciación',ref:'Lucas 1, 26-38',
+  fruit:'La humildad: confiar en Dios y servir sin presumir.',
+  story:'El ángel Gabriel visita a María y le cuenta que será la mamá de Jesús. María confía en Dios y responde: «Hágase en mí según tu palabra».',
+  think:'Mientras rezas, piensa: ¿en qué le puedes decir «sí» a Dios hoy?'},
+ {ord:'Segundo misterio gozoso',name:'La Visitación',ref:'Lucas 1, 39-56',
+  fruit:'El amor al prójimo: ayudar a los demás con alegría.',
+  story:'María se entera de que su prima Isabel espera un bebé y sale de prisa a ayudarla. Isabel la recibe feliz y las dos alaban a Dios.',
+  think:'Mientras rezas, piensa: ¿a quién puedes ayudar hoy?'},
+ {ord:'Tercer misterio gozoso',name:'El Nacimiento de Jesús',ref:'Lucas 2, 1-20',
+  fruit:'El desprendimiento: ser felices con lo sencillo y compartir.',
+  story:'Jesús nace en un pesebre, en una noche tranquila. Los pastores van a verlo y los ángeles cantan la gran noticia: ha nacido el Salvador.',
+  think:'Mientras rezas, piensa: ¿qué puedes compartir hoy con alguien?'},
+ {ord:'Cuarto misterio gozoso',name:'La Presentación en el Templo',ref:'Lucas 2, 22-38',
+  fruit:'La obediencia y la entrega a Dios.',
+  story:'María y José llevan al niño Jesús al templo para presentarlo a Dios. El anciano Simeón lo toma en brazos y da gracias porque ha visto la luz del mundo.',
+  think:'Mientras rezas, piensa: ¿qué le quieres ofrecer a Dios hoy?'},
+ {ord:'Quinto misterio gozoso',name:'El Niño Jesús hallado en el Templo',ref:'Lucas 2, 41-52',
+  fruit:'Buscar a Jesús: querer conocerlo cada día más.',
+  story:'Jesús tiene doce años y se queda en el templo. María y José lo buscan preocupados durante tres días y lo encuentran hablando con los maestros.',
+  think:'Mientras rezas, piensa: ¿cómo puedes buscar a Jesús en tu día?'}
+];
+const ART=[
+ /* 0 Anunciación: azucena bajo una estrella */
+ '<svg viewBox="0 0 220 170" role="img" aria-label="Una azucena bajo una estrella que brilla"><circle cx="110" cy="78" r="82" fill="url(#glowGrad)"/><g style="color:#ffd36e"><use href="#star" x="86" y="10" width="48" height="48"/></g><path d="M110 170C109 146 111 124 110 100" fill="none" stroke="#7fc6a0" stroke-width="4" stroke-linecap="round"/><path d="M110 150C94 146 84 134 82 122C98 124 108 136 110 150Z" fill="#6bb98d"/><path d="M110 140C126 138 138 128 142 116C126 116 113 126 110 140Z" fill="#6bb98d"/><path d="M110 100C98 84 100 64 110 56C120 64 122 84 110 100Z" fill="#f3f6ff"/><path d="M110 100C92 94 80 76 84 62C100 66 112 80 110 100Z" fill="#dfe7ff"/><path d="M110 100C128 94 140 76 136 62C120 66 108 80 110 100Z" fill="#dfe7ff"/><g stroke="#f0a63a" stroke-width="2" stroke-linecap="round"><path d="M110 92V74"/><path d="M106 92L100 78"/><path d="M114 92L120 78"/></g><g fill="#ffd36e"><circle cx="110" cy="73" r="2.5"/><circle cx="99.5" cy="77" r="2.5"/><circle cx="120.5" cy="77" r="2.5"/></g></svg>',
+ /* 1 Visitación: dos figuras y un corazón */
+ '<svg viewBox="0 0 220 170" role="img" aria-label="María e Isabel se abrazan bajo un corazón de luz"><circle cx="110" cy="80" r="82" fill="url(#glowGrad)"/><path d="M0 170V132Q58 104 110 130Q162 104 220 132V170Z" fill="rgba(107,185,141,.35)"/><circle cx="82" cy="78" r="13" fill="#f3f6ff"/><path d="M56 156Q56 102 82 96Q108 102 108 156Z" fill="#dfe7ff"/><circle cx="140" cy="74" r="13" fill="#ffe2b0"/><path d="M114 156Q114 98 140 92Q166 98 166 156Z" fill="#f4b86a"/><path d="M110 60C100 52 96 46 100 41C104 36 110 39 110 43C110 39 116 36 120 41C124 46 120 52 110 60Z" fill="#ff8f7e"/><g style="color:#ffd36e"><use href="#star" x="98" y="6" width="24" height="24"/></g></svg>',
+ /* 2 Nacimiento: pesebre y estrella */
+ '<svg viewBox="0 0 220 170" role="img" aria-label="Un pesebre bajo la estrella de Belén"><circle cx="110" cy="110" r="84" fill="url(#glowGrad)"/><g style="color:#ffd36e"><use href="#star" x="86" y="4" width="48" height="48"/></g><path d="M54 90L110 54L166 90Z" fill="#b98d5a"/><rect x="62" y="90" width="7" height="62" fill="#9a7048"/><rect x="151" y="90" width="7" height="62" fill="#9a7048"/><path d="M80 130H140L132 150H88Z" fill="#a8774a"/><circle cx="110" cy="122" r="11" fill="#fff4cc"/><ellipse cx="110" cy="156" rx="78" ry="9" fill="rgba(240,166,58,.35)"/></svg>',
+ /* 3 Presentación: vela encendida */
+ '<svg viewBox="0 0 220 170" role="img" aria-label="Una vela encendida, luz para el mundo"><circle cx="110" cy="70" r="80" fill="url(#glowGrad)"/><rect x="102" y="86" width="16" height="62" rx="4" fill="#f3f6ff"/><path d="M110 46C98 62 100 78 110 84C120 78 122 62 110 46Z" fill="#ffd36e"/><path d="M110 62C105 70 106 77 110 80C114 77 115 70 110 62Z" fill="#fff4cc"/><ellipse cx="110" cy="150" rx="30" ry="6" fill="#f0a63a"/><g style="color:#ffd36e"><use href="#star" x="40" y="26" width="18" height="18"/><use href="#star" x="164" y="40" width="22" height="22"/></g></svg>',
+ /* 4 Templo: fachada con columnas */
+ '<svg viewBox="0 0 220 170" role="img" aria-label="La fachada del templo con una luz adentro"><circle cx="110" cy="90" r="84" fill="url(#glowGrad)"/><path d="M48 72L110 38L172 72Z" fill="#dfe7ff"/><rect x="48" y="72" width="124" height="8" fill="#f3f6ff"/><rect x="100" y="92" width="20" height="46" rx="3" fill="rgba(255,211,110,.55)"/><g fill="#f3f6ff"><rect x="58" y="82" width="10" height="56"/><rect x="80" y="82" width="10" height="56"/><rect x="130" y="82" width="10" height="56"/><rect x="152" y="82" width="10" height="56"/></g><rect x="42" y="138" width="136" height="8" fill="#dfe7ff"/><rect x="34" y="146" width="152" height="8" fill="#c9d5f7"/><g style="color:#ffd36e"><use href="#star" x="98" y="6" width="24" height="24"/></g></svg>'
+];
+
+const PROGRAM=[{t:'apertura'},{t:'decada',m:0},{t:'decada',m:1},{t:'decada',m:2},{t:'decada',m:3},{t:'decada',m:4},{t:'cierre'}];
+function buildSteps(pt){
+  if(pt.t==='apertura') return [
+    {p:'sc',label:'Señal de la cruz',btn:'Ya me persigné'},
+    {p:'of',label:'Ofrecimiento',btn:'Ya lo ofrecí'},
+    {p:'ac',label:'Acto de contrición',btn:'Ya recé el Acto de contrición'},
+    {p:'cr',label:'Credo',btn:'Ya recé el Credo'},
+    {p:'pn',label:'Padre Nuestro',btn:'Ya recé el Padre Nuestro'},
+    {p:'am',n:1,label:'Ave María · 1 de 3 · por la fe',btn:'Ya recé el Ave María'},
+    {p:'am',n:2,label:'Ave María · 2 de 3 · por la esperanza',btn:'Ya recé el Ave María'},
+    {p:'am',n:3,label:'Ave María · 3 de 3 · por el amor',btn:'Ya recé el Ave María'},
+    {p:'gl',label:'Gloria',btn:'Ya recé el Gloria'}];
+  if(pt.t==='decada'){
+    const a=[{p:'pn',label:'Padre Nuestro',btn:'Ya recé el Padre Nuestro'}];
+    for(let i=1;i<=10;i++) a.push({p:'am',n:i,label:'Ave María · '+i+' de 10',btn:'Ya recé el Ave María'});
+    a.push({p:'gl',label:'Gloria',btn:'Ya recé el Gloria'});
+    a.push({p:'fa',label:'Jaculatorias',btn:'Ya recé las jaculatorias'});
+    return a;
+  }
+  return [
+    {p:'sa',label:'Salve',btn:'Ya recé la Salve'},
+    {p:'ja',label:'Jaculatorias',btn:'Ya recé las jaculatorias'},
+    {p:'fi',label:'Oración final',btn:'Ya recé la oración final'},
+    {p:'sc2',label:'Señal de la cruz',btn:'Ya me persigné'}];
+}
+function tipFor(pt,st){
+  if(pt.t==='apertura') return {0:'Empezamos con la señal de la cruz. Mira cómo se hace.',1:'Le contamos a Jesús por quién rezas hoy.',2:'Pedimos perdón con el corazón.',3:'El Credo: lo que creemos los cristianos.',4:'Ahora la primera cuenta grande: el Padre Nuestro.',5:'Tres Ave Marías para pedir fe, esperanza y amor.',8:'Cerramos el comienzo con el Gloria.'}[st];
+  if(pt.t==='cierre') return {0:'Casi terminamos: la Salve es el saludo de despedida a María.',1:'Oraciones cortitas, como flechas de amor.',2:'La oración final resume lo que pedimos con el rosario.',3:'Cerramos como empezamos: con la señal de la cruz.'}[st];
+  const first=pt.m===0;
+  return {0:first?'Empieza por la cuenta grande de arriba: el Padre Nuestro.':'Otra vez la cuenta grande: el Padre Nuestro.',
+    1:first?'Ahora vienen diez Ave Marías, una por cada cuenta.':undefined,
+    3:'Piensa en el misterio mientras rezas.',
+    5:'¡Ya vas por la mitad! Tu estrella brilla cada vez más.',
+    7:'Respira y sigue con calma. Lo estás haciendo muy bien.',
+    9:'Casi terminas: faltan dos Ave Marías.',
+    10:'¡La última Ave María!',
+    11:'Para cerrar la decena, el Gloria: le damos gracias a Dios.',
+    12:first?'Estas son jaculatorias: oraciones cortitas, como flechas de amor al cielo.':'Las jaculatorias de la decena: pedimos por todos.'}[st];
+}
+
+const RR=128,CX=180,CY=180,C=2*Math.PI*RR;
+const PENT=[523.25,587.33,659.25,783.99,880,1046.5,1174.66,1318.51,1568,1760];
+const state={part:0,step:0,intention:'Por mi familia',mode:'read',muted:false,busy:false,done:false,counts:{pn:0,am:0,gl:0}};
+let steps=[];
+(function(){
+  const m=store.get('rl-mode');
+  if(['off','read','listen'].includes(m)) state.mode=m;
+  if(state.mode==='listen'&&!hasTTS) state.mode='read';
+  state.muted=store.get('rl-muted')==='1';
+})();
+
+/* ================= UTILIDADES ================= */
+let runId=0;
+function cancelRuns(){runId++}
+function seq(fn){
+  const t=++runId; const alive=()=>t===runId;
+  const w=ms=>new Promise((res,rej)=>setTimeout(()=>alive()?res():rej('x'),ms));
+  return fn(w,alive).catch(e=>{if(e!=='x')console.error(e)});
+}
+function lowerFirst(s){return s.charAt(0).toLowerCase()+s.slice(1)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function svgEl(tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e}
+function pl(n,one,many){return n+' '+(n===1?one:many)}
+
+/* cielo con estrellas */
+(function(){
+  const sky=$('.sky'); let s=7; const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+  for(let i=0;i<46;i++){
+    const e=document.createElement('i'); const sz=1+rnd()*2.2;
+    e.style.cssText='left:'+(rnd()*100).toFixed(1)+'%;top:'+(rnd()*78).toFixed(1)+'%;width:'+sz.toFixed(1)+'px;height:'+sz.toFixed(1)+'px;--d:'+(rnd()*4).toFixed(2)+'s;--t:'+(2.5+rnd()*3).toFixed(2)+'s';
+    sky.appendChild(e);
+  }
+})();
+
+/* Lucero, el guía */
+function luceroSVG(){
+  return '<svg viewBox="-12 0 124 100" aria-hidden="true">'
+  +'<g class="wing"><ellipse cx="6" cy="46" rx="17" ry="8" transform="rotate(-28 6 46)"/></g>'
+  +'<g class="wing"><ellipse cx="94" cy="46" rx="17" ry="8" transform="rotate(28 94 46)"/></g>'
+  +'<use class="lbody" href="#star" x="0" y="0" width="100" height="100"/>'
+  +'<circle class="eye" cx="43.5" cy="51" r="2.3"/><circle class="eye" cx="56.5" cy="51" r="2.3"/>'
+  +'<path class="smile" d="M45 58Q50 63 55 58"/>'
+  +'<circle class="cheek" cx="39.5" cy="57" r="2.6"/><circle class="cheek" cx="60.5" cy="57" r="2.6"/></svg>';
+}
+$$('[data-lucero]').forEach(el=>{el.innerHTML=luceroSVG()});
+function setBubble(t){const b=$('#bubble');b.textContent=t;b.style.animation='none';void b.offsetWidth;b.style.animation=''}
+
+/* ================= SONIDO ================= */
+let ac=null;
+function audio(){
+  if(!ac){try{ac=new (window.AudioContext||window.webkitAudioContext)()}catch(e){ac=null}}
+  if(ac&&ac.state==='suspended'){try{ac.resume()}catch(e){}}
+  return ac;
+}
+function tone(f,t0,dur,vol,type){
+  if(state.muted) return; const c=audio(); if(!c) return;
+  try{
+    const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+(t0||0);
+    o.type=type||'sine'; o.frequency.value=f;
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol||.07,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+(dur||1.2));
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+(dur||1.2)+.05);
+  }catch(e){}
+}
+function chimeFor(s){
+  if(s.p==='pn'){tone(196,0,1.7,.09,'triangle');tone(392,.05,1.4,.05)}
+  else if(s.p==='am'){const f=PENT[(s.n-1)%10];tone(f,0,1.3,.07);tone(f*2,0,.9,.025)}
+  else if(s.p==='gl'){[523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*.11,1.5,.06))}
+  else if(s.p==='fa'){tone(783.99,0,1.4,.06);tone(1174.66,.15,1.4,.04)}
+  else{tone(293.66,0,1.6,.07,'triangle');tone(440,.06,1.3,.04)}
+}
+function doneChime(){[523.25,659.25,783.99,1046.5,1318.51].forEach((f,i)=>tone(f,i*.14,1.8,.07))}
+function buzz(){try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}}
+function setMuted(v){
+  state.muted=v; store.set('rl-muted',v?'1':'0');
+  const b=$('#btnMute'); b.setAttribute('aria-pressed',String(v)); b.setAttribute('aria-label',v?'Activar sonidos':'Silenciar sonidos');
+  if(v&&hasTTS){try{speechSynthesis.cancel()}catch(e){}}
+}
+setMuted(state.muted);
+$('#btnMute').addEventListener('click',()=>{setMuted(!state.muted);if(!state.muted){audio();tone(659.25,0,.8,.06)}});
+
+/* ================= NAVEGACIÓN ================= */
+const screens={inicio:$('#s-inicio'),misterio:$('#s-misterio'),rezo:$('#s-rezo'),final:$('#s-final')};
+function go(n){
+  Object.keys(screens).forEach(k=>{screens[k].hidden=k!==n});
+  window.scrollTo(0,0);
+  if(n!=='rezo') stopGuide();
+  const h=$('[data-focus]',screens[n]); if(h){try{h.focus({preventScroll:true})}catch(e){}}
+}
+
+/* inicio: intención */
+const chipsEl=$('#chips');
+INTENTIONS.forEach((t,i)=>chipsEl.insertAdjacentHTML('beforeend','<button type="button" class="chip" role="radio" aria-checked="'+(i===0)+'" data-v="'+t+'">'+t+'</button>'));
+chipsEl.addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(!b) return;
+  $$('.chip',chipsEl).forEach(c=>c.setAttribute('aria-checked',String(c===b)));
+  $('#custom').value='';
+});
+$('#custom').addEventListener('input',e=>{
+  if(e.target.value.trim()) $$('.chip',chipsEl).forEach(c=>c.setAttribute('aria-checked','false'));
+});
+function readIntention(){
+  const custom=$('#custom').value.trim();
+  if(custom) return /^por\s/i.test(custom)?custom:'Por '+custom;
+  const c=$('.chip[aria-checked="true"]',chipsEl);
+  return c?'Por '+lowerFirst(c.dataset.v):'Por mi familia';
+}
+function resetCounts(){state.counts={pn:0,am:0,gl:0}}
+$('#btnStart').addEventListener('click',()=>{
+  state.intention=readIntention(); resetCounts(); audio(); tone(659.25,0,1,.06); tone(987.77,.12,1.2,.05);
+  setSlots(0,-1); startPart(0);
+});
+$$('#shortcuts [data-go]').forEach(b=>b.addEventListener('click',()=>{
+  state.intention=readIntention(); resetCounts(); audio(); tone(659.25,0,.8,.05);
+  const v=b.dataset.go;
+  if(v==='final'){setSlots(5,-1);playFinal();return}
+  const i=+v;
+  if(i>=1&&i<=5){setSlots(i-1,i-1);renderMystery(i-1)} else {setSlots(i===6?5:0,-1);startPart(i)}
+}));
+$('#btnPray').addEventListener('click',e=>{startPart(+e.currentTarget.dataset.m+1)});
+
+/* anuncio del misterio */
+function renderMystery(m){
+  const d=GOZOSOS[m];
+  $('#mOrd').textContent=d.ord; $('#mName').textContent=d.name; $('#mArt').innerHTML=ART[m];
+  $('#mStory').textContent=d.story; $('#mFruit').textContent=d.fruit; $('#mRef').textContent=d.ref; $('#mThink').textContent=d.think;
+  const b=$('#btnPray'); b.textContent=m===0?'Vamos a rezar':'Seguir rezando'; b.dataset.m=m;
+  cancelRuns(); stopGuide(); go('misterio');
+}
+
+/* estrellas de misterios (encabezado) */
+const slotsEl=$('#slots');
+for(let i=0;i<5;i++){
+  slotsEl.insertAdjacentHTML('beforeend','<span class="slot" data-i="'+i+'" role="img" aria-label="Misterio '+(i+1)+' de 5, sin encender"><svg viewBox="0 0 100 100"><use href="#star"/></svg></span>');
+}
+function setSlots(lit,cur){
+  $$('.slot').forEach((s,i)=>{
+    s.classList.toggle('lit',i<lit); s.classList.toggle('cur',i===cur&&i>=lit);
+    s.setAttribute('aria-label','Misterio '+(i+1)+' de 5, '+(i<lit?'encendido':'sin encender'));
+  });
+}
+function litSlot(i){
+  const s=$('.slot[data-i="'+i+'"]'); s.classList.remove('cur'); s.classList.add('lit');
+  s.setAttribute('aria-label','Misterio '+(i+1)+' de 5, encendido');
+}
+
+/* ================= EL ROSARIO: TRES VISTAS ================= */
+let ringMode='decada',beads=[],glows=[],nodePos=[];
+function posD(k){const a=(-90+k*30)*Math.PI/180;return[CX+RR*Math.cos(a),CY+RR*Math.sin(a)]}
+function beadG(k,x,y,r,mark){
+  let h='<g class="bead'+(r>20?' big':'')+'" data-k="'+k+'" transform="translate('+x.toFixed(1)+' '+y.toFixed(1)+')">'
+    +'<circle class="base" r="'+r+'"/><circle class="fill" r="'+r+'" fill="url(#goldBead)"/>';
+  if(mark==='cross') h+='<path class="mark" d="M0 -9V9M-6.5 -3H6.5"/>';
+  if(mark==='dots') h+='<circle class="markdot" cx="0" cy="-6" r="2.4"/><circle class="markdot" cx="-6" cy="4" r="2.4"/><circle class="markdot" cx="6" cy="4" r="2.4"/>';
+  h+='<ellipse class="shine" cx="'+(-r*.32).toFixed(1)+'" cy="'+(-r*.4).toFixed(1)+'" rx="'+(r*.34).toFixed(1)+'" ry="'+(r*.2).toFixed(1)+'" transform="rotate(-25 '+(-r*.32).toFixed(1)+' '+(-r*.4).toFixed(1)+')"/>'
+    +'<circle class="halo" r="'+(r+8)+'"/><circle class="hit" r="30"/></g>';
+  return h;
+}
+function glowsG(P,R){
+  let h='<g class="glows">';
+  P.forEach((p,i)=>{h+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(R[i]*2.3).toFixed(1)+'" fill="url(#glowGrad)"/>'});
+  return h+'</g>';
+}
+function mountRing(h){
+  const ring=$('#ring'); ring.innerHTML=h;
+  ring.style.animation='none'; void ring.getBoundingClientRect(); ring.style.animation='';
+  beads=$$('#ring .bead'); glows=$$('#ring .glows circle');
+}
+function buildDecada(){
+  ringMode='decada'; nodePos=[];
+  const P=[],R=[];
+  for(let k=0;k<12;k++){P.push(posD(k));R.push(k===0||k===11?22:17)}
+  nodePos=P;
+  let h='<circle class="thread" cx="'+CX+'" cy="'+CY+'" r="'+RR+'"/>';
+  h+='<circle class="thread-lit" id="threadLit" cx="'+CX+'" cy="'+CY+'" r="'+RR+'" transform="rotate(-90 '+CX+' '+CY+')" stroke-dasharray="'+C.toFixed(2)+'" stroke-dashoffset="'+C.toFixed(2)+'"/>';
+  h+=glowsG(P,R);
+  h+='<g id="orb" transform="translate(180 166)"><circle id="orbGlow" r="82" fill="url(#glowGrad)"/><g id="orbStar"><use class="orb-dim" href="#star" x="-36" y="-36" width="72" height="72"/><use class="orb-gold" href="#star" x="-36" y="-36" width="72" height="72"/></g></g>';
+  h+='<text id="orbNum" class="orb-num" x="180" y="238" text-anchor="middle">0</text><text class="orb-cap" x="180" y="258" text-anchor="middle">de 10 Ave Marías</text>';
+  for(let k=0;k<12;k++) h+=beadG(k,P[k][0],P[k][1],R[k],k===0?'cross':k===11?'dots':'');
+  h+='<text class="ring-lbl" x="180" y="18" text-anchor="middle">Padre Nuestro</text>';
+  h+='<text class="ring-lbl" x="92" y="44" text-anchor="end">Gloria</text>';
+  h+='<g id="fx"></g>';
+  mountRing(h);
+}
+const COLA_P=[[180,46],[180,128],[180,178],[180,218],[180,258],[180,308]],COLA_R=[0,22,17,17,17,22];
+function buildCola(){
+  ringMode='cola'; nodePos=COLA_P;
+  const y0=80,y1=308,L=y1-y0;
+  let h='<line class="thread" x1="180" y1="'+y0+'" x2="180" y2="'+y1+'"/>';
+  h+='<line class="thread-lit" id="threadLit" x1="180" y1="'+y0+'" x2="180" y2="'+y1+'" stroke-dasharray="'+L+'" stroke-dashoffset="'+L+'"/>';
+  h+='<g class="glows">';
+  COLA_P.forEach((p,i)=>{h+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(i?COLA_R[i]*2.3:64)+'" fill="url(#glowGrad)"/>'});
+  h+='</g>';
+  h+='<g class="bead cross" data-k="0" transform="translate(180 46)"><g class="base"><rect x="-8" y="-32" width="16" height="64" rx="5"/><rect x="-24" y="-18" width="48" height="16" rx="5"/></g>'
+    +'<g class="fill" fill="url(#goldBead)"><rect x="-8" y="-32" width="16" height="64" rx="5"/><rect x="-24" y="-18" width="48" height="16" rx="5"/></g>'
+    +'<rect class="halo" x="-32" y="-42" width="64" height="84" rx="18"/><circle class="hit" r="40"/></g>';
+  h+=beadG(1,180,128,22,'cross')+beadG(2,180,178,17,'')+beadG(3,180,218,17,'')+beadG(4,180,258,17,'')+beadG(5,180,308,22,'dots');
+  const chk=['Señal de la cruz','Ofrecimiento','Acto de contrición','Credo'];
+  chk.forEach((t,i)=>{const y=28+i*26;h+='<g class="chk" data-i="'+i+'"><circle cx="12" cy="'+(y-4)+'" r="5.5"/><text x="24" y="'+y+'">'+t+'</text></g>'});
+  h+='<text class="ring-lbl" x="222" y="133">Padre Nuestro</text>';
+  h+='<text class="ring-lbl" x="214" y="183">por la fe</text><text class="ring-lbl" x="214" y="223">por la esperanza</text><text class="ring-lbl" x="214" y="263">por el amor</text>';
+  h+='<text class="ring-lbl" x="222" y="313">Gloria</text>';
+  h+='<g id="fx"></g>';
+  mountRing(h);
+}
+const CIERRE_P=[[180,150,54],[180,56,40],[100,150,40],[260,150,40],[180,262,40]];
+const CIERRE_LBL=[['Salve',226,62,'start'],['Jaculatorias',100,194,'middle'],['Oración final',260,194,'middle'],['Señal de la cruz',180,318,'middle']];
+function buildCierre(){
+  ringMode='cierre'; nodePos=CIERRE_P;
+  let h='';
+  for(let i=1;i<5;i++){const a=CIERRE_P[i],c=CIERRE_P[0],len=Math.hypot(a[0]-c[0],a[1]-c[1]).toFixed(1);
+    h+='<line class="cbase" x1="'+c[0]+'" y1="'+c[1]+'" x2="'+a[0]+'" y2="'+a[1]+'"/>';
+    h+='<line class="cline" data-l="'+len+'" x1="'+c[0]+'" y1="'+c[1]+'" x2="'+a[0]+'" y2="'+a[1]+'" stroke-dasharray="'+len+'" stroke-dashoffset="'+len+'"/>'}
+  CIERRE_P.forEach((s,i)=>{h+='<use class="fstar lit" href="#star" x="'+(s[0]-s[2]/2)+'" y="'+(s[1]-s[2]/2)+'" width="'+s[2]+'" height="'+s[2]+'"/>'});
+  CIERRE_LBL.forEach(l=>{h+='<text class="ring-lbl" x="'+l[1]+'" y="'+l[2]+'" text-anchor="'+l[3]+'">'+l[0]+'</text>'});
+  h+='<g id="fx"></g>';
+  mountRing(h);
+}
+$('#ring').addEventListener('click',e=>{if(e.target.closest('.bead.current')) advance()});
+
+function nodeOfStep(st){
+  if(ringMode==='decada') return Math.min(st,11);
+  if(ringMode==='cola') return st<4?0:st-3;
+  return st+1;
+}
+function updateRing(){
+  const st=state.step;
+  if(ringMode==='decada'){
+    beads.forEach((g,k)=>{g.classList.toggle('lit',st>k);g.classList.toggle('current',st<=11?k===st:(st===12&&k===11))});
+    glows.forEach((g,k)=>g.classList.toggle('on',st>k));
+    const lit=Math.min(st,12),frac=st>=13?1:lit<=1?0:(lit-1)/12;
+    $('#threadLit').style.strokeDashoffset=(C*(1-frac)).toFixed(2);
+    const p=Math.min(st,13)/13;
+    $('#orbStar').style.transform='scale('+(.55+.45*p).toFixed(3)+')';
+    $('.orb-gold').style.opacity=p.toFixed(2);
+    $('#orbGlow').style.opacity=(p*.95).toFixed(2);
+    $('#orbNum').textContent=Math.max(0,Math.min(10,st-1));
+  }else if(ringMode==='cola'){
+    const nl=(st>=4?1:0)+Math.max(0,st-4);
+    beads.forEach((g,i)=>{const lit=i===0?st>=4:st>=4+i,cur=i===0?st<4:st===3+i;g.classList.toggle('lit',lit);g.classList.toggle('current',cur)});
+    glows.forEach((g,i)=>g.classList.toggle('on',i===0?st>=4:st>=4+i));
+    $$('#ring .chk').forEach((c,i)=>{c.classList.toggle('on',st>i);c.classList.toggle('now',st===i)});
+    const frac=nl===0?0:Math.max(0,(COLA_P[nl-1][1]-80)/228);
+    $('#threadLit').style.strokeDashoffset=(228*(1-frac)).toFixed(1);
+  }else{
+    $$('#ring .cline').forEach((l,i)=>{l.style.strokeDashoffset=st>i?'0':l.dataset.l});
+    $$('#ring .ring-lbl').forEach((t,i)=>{t.classList.toggle('on',st>i);t.classList.toggle('now',st===i)});
+  }
+}
+function sparkle(node){
+  if(reduce) return;
+  const fx=$('#fx'),p=nodePos[node],n=8; if(!fx||!p) return;
+  for(let i=0;i<n;i++){
+    const c=svgEl('circle',{cx:p[0].toFixed(1),cy:p[1].toFixed(1),r:(1.6+Math.random()*2).toFixed(1),fill:i%2?'#ffe9a8':'#ffd36e'});
+    fx.appendChild(c);
+    const a=(i/n)*Math.PI*2+Math.random(),d=26+Math.random()*20;
+    const an=c.animate([{transform:'translate(0px,0px)',opacity:1},{transform:'translate('+(Math.cos(a)*d).toFixed(1)+'px,'+(Math.sin(a)*d).toFixed(1)+'px)',opacity:0}],{duration:650+Math.random()*300,easing:'cubic-bezier(.2,.7,.3,1)'});
+    an.onfinish=()=>c.remove();
+  }
+}
+
+/* ================= ORACIÓN ================= */
+function textFor(s){
+  if(s.p==='of') return 'Señor Jesús, te ofrezco este rosario '+lowerFirst(state.intention)+'. Acompáñame mientras rezo con María. Amén.';
+  return PRAYERS[s.p];
+}
+function renderPrayer(){
+  const s=steps[state.step]; if(!s) return; const pt=PROGRAM[state.part];
+  $('#pMeta').textContent=pt.t==='apertura'?'Comienzo del rosario':pt.t==='cierre'?'Cierre del rosario':(pt.m+1)+'.º misterio gozoso · '+GOZOSOS[pt.m].name;
+  $('#pLabel').textContent=s.label;
+  const t=$('#pText'); t.dataset.k=LONG.includes(s.p)&&s.p!=='pn'?'long':(s.p==='pn'?'long':'');
+  t.innerHTML=textFor(s).split('¦').map(part=>part.trim().split(' ').map(w=>'<span class="w">'+esc(w)+'</span>').join(' ')).join('<span class="sep" aria-hidden="true"><i></i><b>✦</b><i></i></span>');
+  const hw=$('#howto'); hw.hidden=!(s.p==='sc'||s.p==='sc2'); hw.dataset.kind=s.p==='sc2'?'big':'full';
+  const nb=$('#btnNext'); nb.textContent=s.btn; nb.classList.remove('ready');
+  $('#btnUndo').hidden=!(state.step>0);
+  const tip=tipFor(pt,state.step); if(tip) setBubble(tip);
+  $('#live').textContent=s.label;
+  startGuide(700);
+}
+
+/* guía de lectura: palabras que se iluminan, y voz opcional */
+let gTimer=null,gStart=null,gToken=0,voiceName=store.get('rl-voice')||'';
+function esVoices(){try{return(speechSynthesis.getVoices()||[]).filter(v=>/^es/i.test(v.lang))}catch(e){return[]}}
+function voiceScore(v){
+  const n=v.name.toLowerCase(),l=v.lang.toLowerCase().replace('_','-');let sc=0;
+  if(/natural|neural|online|premium|enhanced|wavenet|studio/.test(n)) sc+=50;
+  if(/google/.test(n)) sc+=20;
+  if(l==='es-co') sc+=12; else if(l==='es-419'||l==='es-us'||l==='es-mx') sc+=10; else if(l==='es-es') sc+=4;
+  if(!v.localService) sc+=5;
+  return sc;
+}
+function pickVoice(){
+  const vs=esVoices(); if(!vs.length) return null;
+  const f=voiceName&&vs.find(v=>v.name===voiceName); if(f) return f;
+  return vs.slice().sort((a,b)=>voiceScore(b)-voiceScore(a))[0];
+}
+function fillVoices(){
+  if(!hasTTS) return;
+  const sel=$('#voiceSel'),vs=esVoices().sort((a,b)=>voiceScore(b)-voiceScore(a));
+  sel.innerHTML='<option value="">Automática (la mejor del teléfono)</option>'+vs.map(v=>'<option value="'+esc(v.name)+'">'+esc(v.name)+' · '+esc(v.lang)+'</option>').join('');
+  sel.value=voiceName&&vs.some(v=>v.name===voiceName)?voiceName:'';
+}
+function updateVoiceRow(){const on=hasTTS&&state.mode==='listen';$('#voiceRow').hidden=!on;$('#voiceHint').hidden=!on}
+if(hasTTS){fillVoices();try{speechSynthesis.onvoiceschanged=fillVoices}catch(e){}}
+$('#voiceSel').addEventListener('change',e=>{voiceName=e.target.value;store.set('rl-voice',voiceName)});
+$('#voiceTest').addEventListener('click',()=>{
+  if(!hasTTS||state.muted) return;
+  try{
+    speechSynthesis.cancel();
+    const v=pickVoice(),u=new SpeechSynthesisUtterance('Dios te salve, María, llena eres de gracia.');
+    u.lang=v?v.lang:'es-419'; if(v) u.voice=v; u.rate=.9; speechSynthesis.speak(u);
+  }catch(e){}
+});
+function stopGuide(){
+  gToken++; clearInterval(gTimer); clearTimeout(gStart); gTimer=gStart=null;
+  if(hasTTS){try{speechSynthesis.cancel()}catch(e){}}
+}
+function setWord(ws,i){ws.forEach((w,k)=>{w.classList.toggle('done',k<i);w.classList.toggle('cur',k===i)})}
+function finishGuide(ws){ws.forEach(w=>{w.classList.remove('cur');w.classList.add('done')});$('#btnNext').classList.add('ready')}
+function timerGuide(ws,token,per){
+  let i=0; setWord(ws,0);
+  gTimer=setInterval(()=>{
+    if(token!==gToken){clearInterval(gTimer);return}
+    i++; if(i>=ws.length){clearInterval(gTimer);gTimer=null;finishGuide(ws);return}
+    setWord(ws,i);
+  },per);
+}
+function chunksOf(words){
+  const out=[]; let cur=[],s0=0;
+  words.forEach((w,i)=>{
+    cur.push(w);
+    if(/[.;:!?]$/.test(w)||(cur.length>=12&&/,$/.test(w))){out.push({s:s0,e:i,words:cur});cur=[];s0=i+1}
+  });
+  if(cur.length) out.push({s:s0,e:words.length-1,words:cur});
+  out.forEach(c=>{c.text=c.words.join(' ');let o=0;c.off=c.words.map(w=>{const x=o;o+=w.length+1;return x})});
+  return out;
+}
+function listenGuide(ws,token){
+  const chunks=chunksOf(ws.map(w=>w.textContent)),v=pickVoice();
+  let ci=0,started=false,wt=null;
+  try{speechSynthesis.cancel()}catch(e){}
+  const guard=setTimeout(()=>{
+    if(!started&&token===gToken){try{speechSynthesis.cancel()}catch(e){} timerGuide(ws,token,430)}
+  },2500);
+  function say(){
+    if(token!==gToken) return;
+    if(ci>=chunks.length){clearTimeout(guard);finishGuide(ws);return}
+    const c=chunks[ci],u=new SpeechSynthesisUtterance(c.text);
+    u.lang=v?v.lang:'es-419'; if(v) u.voice=v; u.rate=.9; u.pitch=1;
+    let wi=c.s,advanced=false;
+    const next=()=>{if(advanced) return;advanced=true;clearInterval(wt);clearTimeout(safety);ci++;setTimeout(say,220)};
+    const safety=setTimeout(next,Math.max(4000,c.words.length*900));
+    u.onstart=()=>{
+      if(token!==gToken) return;
+      started=true; clearTimeout(guard); wi=c.s; setWord(ws,wi); clearInterval(wt);
+      wt=setInterval(()=>{if(token!==gToken){clearInterval(wt);return}if(wi<c.e){wi++;setWord(ws,wi)}},360);
+    };
+    u.onboundary=ev=>{
+      if(token!==gToken||typeof ev.charIndex!=='number') return;
+      let k=0; for(let j=0;j<c.off.length;j++){if(c.off[j]<=ev.charIndex) k=j}
+      wi=c.s+k; setWord(ws,wi);
+    };
+    u.onend=next;
+    u.onerror=()=>{
+      if(token!==gToken) return;
+      if(!started){clearTimeout(guard);clearTimeout(safety);timerGuide(ws,token,430)} else next();
+    };
+    try{speechSynthesis.speak(u)}catch(e){clearTimeout(guard);clearTimeout(safety);timerGuide(ws,token,430)}
+  }
+  say();
+}
+function startGuide(delay){
+  stopGuide();
+  const ws=$$('#pText .w'); ws.forEach(w=>{w.className='w'});
+  $('#btnNext').classList.remove('ready');
+  if(state.mode==='off'||!ws.length) return;
+  const token=++gToken;
+  gStart=setTimeout(()=>{
+    if(token!==gToken) return;
+    if(state.mode==='listen'&&hasTTS&&!state.muted&&esVoices().length) listenGuide(ws,token);
+    else timerGuide(ws,token,state.mode==='listen'?430:380);
+  },delay||0);
+}
+$('#seg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  state.mode=b.dataset.mode; store.set('rl-mode',state.mode);
+  $$('#seg button').forEach(x=>x.setAttribute('aria-checked',String(x===b)));
+  if(state.mode==='listen'&&state.muted) setMuted(false);
+  audio(); updateVoiceRow();
+  if(!state.done) startGuide(200);
+});
+if(!hasTTS) $('#segListen').hidden=true;
+$$('#seg button').forEach(x=>x.setAttribute('aria-checked',String(x.dataset.mode===state.mode)));
+updateVoiceRow();
+
+/* ================= PARTES ================= */
+function startPart(idx){
+  cancelRuns(); stopGuide();
+  $$('.flyer,.spark').forEach(e=>e.remove());
+  state.part=idx; state.step=0; state.done=false; state.busy=false;
+  const pt=PROGRAM[idx]; steps=buildSteps(pt);
+  if(pt.t==='decada'){setSlots(pt.m,pt.m);buildDecada()}
+  else if(pt.t==='apertura'){setSlots(0,-1);buildCola()}
+  else{setSlots(5,-1);buildCierre()}
+  $('#ring').setAttribute('aria-label',pt.t==='apertura'?'El comienzo del rosario: crucifijo, un Padre Nuestro, tres Ave Marías y un Gloria':pt.t==='cierre'?'Cinco estrellas que forman una cruz de luz':'Las cuentas de una decena: un Padre Nuestro, diez Ave Marías y un Gloria');
+  $('#doneCard').hidden=true; $('#prayCard').hidden=false; $('#actionbar').hidden=false;
+  updateRing(); go('rezo'); renderPrayer();
+}
+function advance(){
+  if(state.busy||state.done||state.step>=steps.length) return;
+  state.busy=true; stopGuide(); audio();
+  const s=steps[state.step],node=nodeOfStep(state.step);
+  if(state.counts[s.p]!==undefined) state.counts[s.p]++;
+  chimeFor(s); buzz();
+  state.step++; updateRing(); sparkle(node);
+  try{window.scrollTo({top:0,behavior:reduce?'auto':'smooth'})}catch(e){window.scrollTo(0,0)}
+  if(state.step===steps.length){state.done=true;seq(finishPart)} else renderPrayer();
+  setTimeout(()=>{state.busy=false},reduce?250:550);
+}
+$('#btnNext').addEventListener('click',advance);
+$('#btnUndo').addEventListener('click',()=>{
+  if(state.step<=0||state.done) return;
+  stopGuide(); state.step--;
+  const s=steps[state.step]; if(state.counts[s.p]!==undefined) state.counts[s.p]--;
+  updateRing(); renderPrayer();
+});
+
+let doneFn=null;
+function showDone(title,text,btn,note,fn){
+  $('#doneTitle').textContent=title; $('#doneText').textContent=text; $('#btnDoneNext').textContent=btn;
+  $('#doneNote').textContent=note||''; $('#doneNote').hidden=!note; doneFn=fn;
+  $('#doneCard').hidden=false;
+  const h=$('#doneTitle'); try{h.focus({preventScroll:true})}catch(e){}
+  $('#live').textContent=title;
+}
+$('#btnDoneNext').addEventListener('click',()=>{if(doneFn) doneFn()});
+
+/* estrella que vuela al cielo */
+function flyStar(slotIdx){
+  return new Promise(res=>{
+    const src=$('#orbStar'),from=src.getBoundingClientRect(),to=$('.slot[data-i="'+slotIdx+'"]').getBoundingClientRect();
+    const fl=document.createElement('div'); fl.className='flyer';
+    fl.innerHTML='<svg viewBox="0 0 100 100"><use href="#star"/></svg>';
+    fl.style.cssText='left:'+from.left+'px;top:'+from.top+'px;width:'+from.width+'px;height:'+from.height+'px';
+    document.body.appendChild(fl);
+    src.style.transition='none'; src.style.opacity='0'; $('.orb-gold').style.opacity='0';
+    const dx=(to.left+to.width/2)-(from.left+from.width/2),dy=(to.top+to.height/2)-(from.top+from.height/2),sc=to.width/from.width;
+    const side=dx>=0?40:-40;
+    const kf=[{transform:'translate(0px,0px) scale(1)'},
+      {transform:'translate('+(dx*.4+side).toFixed(1)+'px,'+(dy*.55).toFixed(1)+'px) scale(1.25)',offset:.5},
+      {transform:'translate('+dx.toFixed(1)+'px,'+dy.toFixed(1)+'px) scale('+sc.toFixed(3)+')'}];
+    const tr=setInterval(()=>{
+      if(reduce) return;
+      const r=fl.getBoundingClientRect(),s=document.createElement('div'); s.className='spark';
+      s.style.left=(r.left+r.width/2)+'px'; s.style.top=(r.top+r.height/2)+'px'; document.body.appendChild(s);
+      const a=s.animate([{transform:'translate(0,0)',opacity:.9},{transform:'translate('+((Math.random()-.5)*26).toFixed(0)+'px,'+(10+Math.random()*18).toFixed(0)+'px)',opacity:0}],{duration:700});
+      a.onfinish=()=>s.remove();
+    },55);
+    const a=fl.animate(kf,{duration:reduce?200:1500,easing:'cubic-bezier(.5,0,.3,1)',fill:'forwards'});
+    a.onfinish=()=>{clearInterval(tr);fl.remove();res()};
+  });
+}
+async function finishPart(w,alive){
+  const pt=PROGRAM[state.part];
+  $('#prayCard').hidden=true; $('#actionbar').hidden=true;
+  if(pt.t==='apertura'){
+    setBubble('¡Listo el comienzo del rosario!'); doneChime(); await w(1000);
+    showDone('¡Comienzo listo!','Rezaste la señal de la cruz, el Credo y las primeras cuentas. Ahora anunciamos el primer misterio.','Anunciar el primer misterio','',()=>renderMystery(0));
+  }else if(pt.t==='decada'){
+    setBubble('¡Amén! Mira cómo sube tu estrella.'); doneChime(); await w(900);
+    await flyStar(pt.m); await w(0);
+    litSlot(pt.m); tone(1318.51,0,1.6,.06); await w(600);
+    if(pt.m<4){
+      setBubble('¡Lo lograste! Tu estrella '+(pt.m+1)+' ya está en el cielo.');
+      showDone('¡Se encendió tu estrella '+(pt.m+1)+'!','Misterio '+(pt.m+1)+' de 5 completo. Sigue: '+GOZOSOS[pt.m+1].name+'.','Seguir con el siguiente misterio','Si necesitas descansar, respira hondo un momento antes de seguir.',()=>renderMystery(pt.m+1));
+    }else{
+      setBubble('¡Cinco estrellas encendidas!');
+      showDone('¡Las cinco estrellas brillan!','Solo falta cerrar el rosario con la Salve, unas jaculatorias y la oración final.','Cerrar el rosario','',()=>startPart(6));
+    }
+  }else{
+    setBubble('¡Amén! Mira cómo sube tu luz.'); doneChime(); await w(1300);
+    playFinal();
+  }
+}
+$('#btnHome').addEventListener('click',()=>{cancelRuns();go('inicio')});
+let exitT=null;
+$('#btnExit').addEventListener('click',()=>{
+  const lab=$('#exitLabel');
+  if(lab.hidden){lab.hidden=false;exitT=setTimeout(()=>{lab.hidden=true},3000)}
+  else{clearTimeout(exitT);lab.hidden=true;cancelRuns();stopGuide();go('inicio')}
+});
+
+/* ================= GRAN FINAL ================= */
+const FIN=[[180,120,46],[100,220,46],[260,220,46],[180,360,46],[180,220,64]];
+function buildFinal(){
+  let h='<circle id="finGlow" cx="180" cy="220" r="190" fill="url(#glowGrad)"/>';
+  const c=FIN[4];
+  for(let i=0;i<4;i++){const a=FIN[i],len=Math.hypot(a[0]-c[0],a[1]-c[1]).toFixed(1);
+    h+='<line class="fline" x1="'+c[0]+'" y1="'+c[1]+'" x2="'+a[0]+'" y2="'+a[1]+'" stroke-dasharray="'+len+'" stroke-dashoffset="'+len+'"/>'}
+  h+='<g id="cross">';
+  FIN.forEach((s,i)=>{h+='<use class="fstar lit" id="fs'+i+'" href="#star" x="'+(s[0]-s[2]/2)+'" y="'+(s[1]-s[2]/2)+'" width="'+s[2]+'" height="'+s[2]+'"/>'});
+  h+='</g><g id="ffx"></g>';
+  h+='<g id="lantern" transform="translate(180 700)" opacity="0"><circle r="54" fill="url(#glowGrad)"/><circle r="14" fill="#fff4cc"/><circle r="8" fill="#fff"/>'
+    +'<g transform="translate(0 44)"><rect id="lanRect" rx="14" ry="14" height="28" y="-18" fill="rgba(8,16,40,.8)" stroke="rgba(255,211,110,.7)"/><text id="lanText" class="lan-text" text-anchor="middle" y="1"></text></g></g>';
+  $('#stage').innerHTML=h;
+  const txt=state.intention,wd=Math.min(310,28+txt.length*7.8);
+  $('#lanText').textContent=txt; $('#lanRect').setAttribute('width',wd.toFixed(0)); $('#lanRect').setAttribute('x',(-wd/2).toFixed(0));
+  $('#finIntent').textContent=txt;
+  const k=state.counts;
+  $('#finCounts').textContent=k.am>0?'Rezaste '+pl(k.am,'Ave María',"Ave Marías")+', '+pl(k.pn,'Padre Nuestro','Padre Nuestro')+' y '+pl(k.gl,'Gloria','Gloria')+'.':'';
+  $('#finCounts').hidden=!(k.am>0);
+  $('#finMsg').classList.remove('show');
+  $('#cross').classList.remove('flare');
+}
+function finSparkle(x,y,n){
+  if(reduce) return;
+  const g=$('#ffx');
+  for(let i=0;i<(n||10);i++){
+    const c=svgEl('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r:(1.5+Math.random()*2.2).toFixed(1),fill:i%2?'#ffe9a8':'#ffd36e'});
+    g.appendChild(c);
+    const a=Math.random()*Math.PI*2,d=24+Math.random()*34;
+    const an=c.animate([{transform:'translate(0px,0px)',opacity:1},{transform:'translate('+(Math.cos(a)*d).toFixed(1)+'px,'+(Math.sin(a)*d).toFixed(1)+'px)',opacity:0}],{duration:800+Math.random()*400,easing:'ease-out'});
+    an.onfinish=()=>c.remove();
+  }
+}
+function flare(){
+  $('#cross').classList.add('flare');
+  if(!reduce){
+    const r=svgEl('circle',{cx:180,cy:220,r:20,fill:'none',stroke:'#ffd36e','stroke-width':3});
+    r.style.transformBox='fill-box'; r.style.transformOrigin='center'; $('#ffx').appendChild(r);
+    const a=r.animate([{transform:'scale(1)',opacity:.9},{transform:'scale(9)',opacity:0}],{duration:1500,easing:'ease-out'}); a.onfinish=()=>r.remove();
+  }
+  finSparkle(180,220,24);
+  [523.25,659.25,783.99,1046.5,1318.51].forEach((f,i)=>tone(f,i*.12,1.8,.06));
+}
+function rise(alive){
+  return new Promise(res=>{
+    const L=$('#lantern'),D=reduce?1200:5600,t0=performance.now();
+    let last=0,flared=false;
+    function f(now){
+      if(!alive()) return res();
+      const t=Math.min(1,(now-t0)/D),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+      const y=700-830*e,x=180+16*Math.sin(t*7);
+      L.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+')');
+      if(now-last>70&&!reduce){last=now;
+        const c=svgEl('circle',{cx:(x+(Math.random()-.5)*16).toFixed(1),cy:(y+6).toFixed(1),r:(1.5+Math.random()*2.5).toFixed(1),fill:'#ffe9a8'});
+        $('#ffx').appendChild(c);
+        const an=c.animate([{transform:'translate(0px,0px)',opacity:.9},{transform:'translate(0px,34px)',opacity:0}],{duration:900}); an.onfinish=()=>c.remove();}
+      if(!flared&&y<250){flared=true;flare()}
+      if(t<1) requestAnimationFrame(f); else res();
+    }
+    requestAnimationFrame(f);
+  });
+}
+function showFinMsg(){
+  $('#finMsg').classList.add('show');
+  const h=$('#finMsg [data-focus]'); if(h){try{h.focus({preventScroll:true})}catch(e){}}
+}
+function playFinal(){
+  cancelRuns(); stopGuide();
+  $$('.flyer,.spark').forEach(e=>e.remove());
+  go('final'); buildFinal();
+  seq(async(w,alive)=>{
+    await w(500);
+    $('#finGlow').style.opacity='1';
+    $$('.fline').forEach((l,i)=>setTimeout(()=>{l.style.strokeDashoffset='0'},reduce?0:i*130));
+    await w(1800);
+    $('#lantern').setAttribute('opacity','1');
+    [392,523.25,659.25,783.99].forEach((f,i)=>tone(f,i*.3,1.6,.04));
+    await rise(alive); if(!alive()) return;
+    $('#lantern').setAttribute('opacity','0');
+    await w(500); showFinMsg();
+  });
+}
+$('#finSkip').addEventListener('click',()=>{
+  cancelRuns();
+  $$('.fline').forEach(l=>{l.style.strokeDashoffset='0'});
+  $('#finGlow').style.opacity='1'; $('#lantern').setAttribute('opacity','0');
+  showFinMsg();
+});
+})();
+</script>
