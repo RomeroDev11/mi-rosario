@@ -228,6 +228,34 @@ input[type=text]::placeholder{color:#7f92c4}
 .fin-msg h2{font-size:30px;color:var(--gold)}
 .intent{font:800 15px var(--f-body);padding:8px 16px;border-radius:999px;background:rgba(255,211,110,.16);border:1px solid rgba(255,211,110,.5)}
 
+/* inicio: menú y preparar el rezo */
+.menu{display:grid;gap:14px}
+.mcard{position:relative;display:flex;align-items:center;gap:14px;width:100%;min-height:96px;padding:16px;text-align:left;border-radius:22px;border:1.5px solid var(--card-line);background:var(--card);cursor:pointer;transition:transform .12s}
+.mcard:active{transform:scale(.98)}
+.mcard:not(:last-child)::after{content:"";position:absolute;left:38px;top:100%;height:14px;width:3px;background:var(--line)}
+.mcard .num{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:800 20px var(--f-display);background:rgba(255,211,110,.16);border:1.5px solid var(--gold);color:var(--gold)}
+.mcard .ti{display:block;font:700 21px/1.15 var(--f-display)}
+.mcard .su{display:block;margin-top:3px;font-size:14px;line-height:1.35;color:var(--mist)}
+.mcard .go{flex:none;margin-left:auto;width:22px;height:22px;fill:none;stroke:var(--gold);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.mcard.next{background:linear-gradient(180deg,#ffe493,#f6b94a);border-color:transparent;color:var(--ink);box-shadow:0 8px 28px rgba(246,185,74,.3)}
+.mcard.next .num{background:rgba(36,23,0,.12);border-color:rgba(36,23,0,.55);color:var(--ink)}
+.mcard.next .su{color:rgba(36,23,0,.78)}
+.mcard.next .go{stroke:var(--ink)}
+.mcard.done{border-color:rgba(255,211,110,.55)}
+.mcard.done .num{background:var(--gold);color:var(--ink)}
+.mcard .num svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.sets{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.setcard{position:relative;display:block;width:100%;padding:10px 12px;text-align:left;border-radius:16px;border:1.5px solid var(--card-line);background:rgba(255,255,255,.05);cursor:pointer}
+.setcard[aria-checked="true"]{background:rgba(255,211,110,.16);border-color:var(--gold)}
+.setcard .sn{display:flex;align-items:center;justify-content:space-between;gap:6px;font:700 17px/1.2 var(--f-display)}
+.setcard .hoy{font:800 10px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:999px;background:var(--gold);color:var(--ink)}
+.setcard .dy{display:block;margin-top:3px;font:700 12.5px/1.2 var(--f-body);color:var(--mist)}
+.setcard .dy b{color:var(--gold);font-weight:800}
+.setdesc{font-size:14px;line-height:1.4;color:var(--pearl);min-height:1.4em}
+.help{border-top:1px dashed var(--card-line);padding-top:4px}
+.help summary{min-height:44px;display:flex;align-items:center;font-weight:700;color:var(--mist);cursor:pointer}
+.help p{font-size:14px;line-height:1.5;color:var(--pearl);padding-bottom:8px}
+
 /* juego: ordena el rosario */
 .btn.ghost{background:rgba(255,255,255,.08);color:var(--pearl);box-shadow:inset 0 0 0 1.5px var(--card-line)}
 .g-head{display:flex;align-items:center;gap:6px;margin-left:-8px}
@@ -316,18 +344,53 @@ input[type=text]::placeholder{color:#7f92c4}
 
   <!-- INICIO -->
   <section class="screen" id="s-inicio">
-    <p class="eyebrow">Prototipo · rosario completo</p>
+    <p class="eyebrow">Aprende y reza el rosario</p>
     <h1 data-focus tabindex="-1">Rosario de <em>Luz</em></h1>
     <p class="lead">Cada Ave María enciende una cuenta, cada misterio enciende una estrella y al final tu oración sube al cielo.</p>
     <div class="guide">
       <div class="lucero" data-lucero></div>
-      <p class="bubble">¡Hola! Soy Lucero. Rezamos juntos, a tu ritmo, desde la señal de la cruz hasta el final.</p>
+      <p class="bubble">¡Hola! Soy Lucero. Primero conocemos el rosario, luego jugamos y al final lo rezamos juntos.</p>
     </div>
+    <nav class="menu" aria-label="¿Qué quieres hacer?">
+      <button class="mcard" id="btnKnow" type="button">
+        <span class="num">1</span>
+        <span><span class="ti">Conoce tu rosario</span><span class="su">Toca cada parte y descubre para qué sirve.</span></span>
+        <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="mcard" id="btnGame" type="button">
+        <span class="num">2</span>
+        <span><span class="ti">Juega: ordena el rosario</span><span class="su">Arma el rosario en 3 niveles y gana estrellas.</span></span>
+        <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+      <button class="mcard" id="btnPrayHome" type="button">
+        <span class="num">3</span>
+        <span><span class="ti">Reza el rosario</span><span class="su" id="prayHomeSub">Con luz, cuenta por cuenta.</span></span>
+        <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </nav>
+  </section>
+
+  <!-- PREPARAR EL REZO -->
+  <section class="screen" id="s-rezar" hidden>
+    <header class="g-head">
+      <button class="icon" id="rBack" type="button" aria-label="Volver al inicio">
+        <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><span class="exit-label">Inicio</span>
+      </button>
+    </header>
+    <p class="eyebrow">Reza el rosario</p>
+    <h2 class="title" data-focus tabindex="-1">Vamos a rezar</h2>
+
     <div class="panel">
-      <h2>¿Qué misterios rezamos hoy?</h2>
-      <div class="chips" id="setChips" role="radiogroup" aria-label="Misterios del rosario"></div>
-      <p class="small" id="setNote"></p>
+      <h2>¿Qué misterios rezamos?</h2>
+      <p class="small" id="todayLine"></p>
+      <div class="sets" id="setChips" role="radiogroup" aria-label="Misterios del rosario"></div>
+      <p class="setdesc" id="setDesc"></p>
+      <details class="help">
+        <summary>¿Qué son los misterios?</summary>
+        <p>Los misterios son momentos de la vida de Jesús y de María. Mientras rezamos las diez Ave Marías de cada decena, pensamos en uno de ellos. Hay cuatro grupos y cada uno se reza en días distintos de la semana.</p>
+      </details>
     </div>
+
     <div class="panel">
       <h2>¿Por quién quieres rezar hoy?</h2>
       <div class="chips" id="chips" role="radiogroup" aria-label="Intención de la oración"></div>
@@ -335,9 +398,7 @@ input[type=text]::placeholder{color:#7f92c4}
       <input id="custom" type="text" maxlength="40" autocomplete="off" placeholder="Por mi abuelito…">
       <p class="small">Tu intención se queda en tu pantalla. No se guarda ni se envía a nadie.</p>
     </div>
-    <button class="btn" id="btnStart" type="button">Empezar</button>
-    <button class="btn ghost" id="btnKnow" type="button">Conoce tu rosario</button>
-    <button class="btn ghost" id="btnGame" type="button">Juega: ordena el rosario</button>
+    <button class="btn" id="btnStart" type="button">Empezar a rezar</button>
     <details class="tests">
       <summary>Atajos de prueba</summary>
       <div class="chips" id="shortcuts">
@@ -807,8 +868,9 @@ setMuted(state.muted);
 $('#btnMute').addEventListener('click',()=>{setMuted(!state.muted);if(!state.muted){audio();tone(659.25,0,.8,.06)}});
 
 /* ================= NAVEGACIÓN ================= */
-const screens={inicio:$('#s-inicio'),misterio:$('#s-misterio'),rezo:$('#s-rezo'),final:$('#s-final'),juego:$('#s-juego'),conoce:$('#s-conoce')};
+const screens={inicio:$('#s-inicio'),misterio:$('#s-misterio'),rezo:$('#s-rezo'),final:$('#s-final'),juego:$('#s-juego'),conoce:$('#s-conoce'),rezar:$('#s-rezar')};
 function go(n){
+  if(n==='inicio') refreshMenu();
   Object.keys(screens).forEach(k=>{screens[k].hidden=k!==n});
   window.scrollTo(0,0);
   if(n!=='rezo') stopGuide();
@@ -819,12 +881,26 @@ function go(n){
 const chipsEl=$('#chips');
 INTENTIONS.forEach((t,i)=>chipsEl.insertAdjacentHTML('beforeend','<button type="button" class="chip" role="radio" aria-checked="'+(i===0)+'" data-v="'+t+'">'+t+'</button>'));
 const setChipsEl=$('#setChips');
+const DAYS=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],DAYN=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+const SETX={
+  gozosos:{d:[1,6],sub:'La infancia de Jesús: alegría y sencillez.'},
+  luminosos:{d:[4],sub:'La vida pública de Jesús: su luz en el mundo.'},
+  dolorosos:{d:[2,5],sub:'La pasión de Jesús: su amor hasta el final.'},
+  gloriosos:{d:[3,0],sub:'La victoria de Jesús y de María: la alegría del cielo.'}
+};
 function renderSetChips(){
-  setChipsEl.innerHTML=Object.keys(SETS).map(k=>'<button type="button" class="chip" role="radio" aria-checked="'+(k===state.set)+'" data-k="'+k+'">'+SETS[k].name+'</button>').join('');
-  const S=curSet();
-  $('#setNote').textContent=(state.set===daySet()?'Hoy toca rezar estos misterios. ':'')+'Tradicionalmente se rezan '+S.days+'.';
+  const today=new Date().getDay(),ts=daySet();
+  setChipsEl.innerHTML=Object.keys(SETS).map(k=>{
+    const x=SETX[k],lab=[1,2,3,4,5,6,0].filter(dn=>x.d.includes(dn)).map(dn=>dn===today?'<b>'+DAYS[(dn+6)%7]+'</b>':DAYS[(dn+6)%7]).join(' · ');
+    return '<button type="button" class="setcard" role="radio" aria-checked="'+(k===state.set)+'" data-k="'+k+'" aria-label="Misterios '+SETS[k].name.toLowerCase()+', se rezan '+SETS[k].days+(k===ts?'. Son los de hoy':'')+'">'
+      +'<span class="sn"><span>'+esc(SETS[k].name)+'</span>'+(k===ts?'<b class="hoy">Hoy</b>':'')+'</span>'
+      +'<span class="dy">'+lab+'</span></button>';
+  }).join('');
+  $('#todayLine').textContent='Hoy es '+DAYN[today]+': tocan los misterios '+SETS[ts].name.toLowerCase()+'.';
+  $('#setDesc').textContent=SETX[state.set].sub;
+  const hs=$('#prayHomeSub'); if(hs) hs.textContent='Hoy: misterios '+SETS[state.set].name.toLowerCase()+'.';
 }
-setChipsEl.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;state.set=b.dataset.k;renderSetChips()});
+setChipsEl.addEventListener('click',e=>{const b=e.target.closest('.setcard');if(!b)return;state.set=b.dataset.k;renderSetChips()});
 renderSetChips();
 chipsEl.addEventListener('click',e=>{
   const b=e.target.closest('.chip'); if(!b) return;
@@ -1418,7 +1494,7 @@ $('#tray').addEventListener('click',e=>{const b=e.target.closest('.piece');if(b)
 $('#gBack').addEventListener('click',()=>{if(G)gMenu();else go('inicio')});
 $('#gLevels').addEventListener('click',gMenu);
 $('#gPray').addEventListener('click',()=>{
-  audio();tone(659.25,0,.8,.05);G=null;go('inicio');
+  audio();tone(659.25,0,.8,.05);G=null;renderSetChips();go('rezar');
   const pn=$('#chips').closest('.panel');
   try{pn.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}catch(e){}
   const b=$('#btnStart');b.classList.add('ready');setTimeout(()=>b.classList.remove('ready'),6000);
@@ -1514,13 +1590,29 @@ $('#kSpeak').addEventListener('click',()=>{
   }catch(e){}
 });
 $('#kBack').addEventListener('click',()=>go('inicio'));
+$('#rBack').addEventListener('click',()=>go('inicio'));
+function refreshMenu(){
+  const know=typeof kSeen!=='undefined'&&kSeen.length>=KP.length;
+  const game=LEVELS.every((l,i)=>bestStars(i)>0);
+  const st=[know,game,false];
+  const nxt=st.findIndex(x=>!x);
+  $$('.menu .mcard').forEach((c,i)=>{
+    const done=st[i];
+    c.classList.toggle('done',done);
+    c.classList.toggle('next',i===(nxt<0?2:nxt));
+    $('.num',c).innerHTML=done?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>':String(i+1);
+    c.setAttribute('aria-label',(done?'Completado. ':'')+$('.ti',c).textContent);
+  });
+}
+$('#btnPrayHome').addEventListener('click',()=>{audio();tone(659.25,0,.8,.05);renderSetChips();go('rezar')});
 $('#kPlay').addEventListener('click',()=>{audio();tone(659.25,0,.8,.05);gMenu();go('juego')});
 $('#kPray').addEventListener('click',()=>{
-  audio();tone(659.25,0,.8,.05);go('inicio');
+  audio();tone(659.25,0,.8,.05);renderSetChips();go('rezar');
   try{$('#chips').closest('.panel').scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}catch(e){}
   const b=$('#btnStart');b.classList.add('ready');setTimeout(()=>b.classList.remove('ready'),6000);
 });
 
+refreshMenu();
 $('#finSkip').addEventListener('click',()=>{
   cancelRuns();
   $$('.fline').forEach(l=>{l.style.strokeDashoffset='0'});
