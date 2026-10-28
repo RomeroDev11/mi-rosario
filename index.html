@@ -1524,7 +1524,8 @@ const KP=[
   {k:'dec',t:'Las diez cuentas pequeñas',d:'Cada grupo de diez cuentas pequeñas es una decena. Rezamos diez Ave Marías mientras pensamos en el misterio.',f:'«Decena» viene de diez. Con cinco decenas, ¡son cincuenta Ave Marías!'}
 ];
 let kIdx=-1,kSeen=[];
-try{kSeen=(store.get('rl-know')||'').split(',').filter(k=>KP.some(p=>p.k===k))}catch(e){kSeen=[]}
+/* Cada visita empieza limpia: kSeen no se carga del almacenamiento. 'rl-know-done' solo recuerda que ya se completó (para el menú). */
+function knowDone(){try{return store.get('rl-know-done')==='1'||(store.get('rl-know')||'').split(',').filter(k=>KP.some(p=>p.k===k)).length>=KP.length}catch(e){return false}}
 (function buildKnow(){
   const cx=180,cy=135,R=124,N=58;
   const ang=i=>(90+i*360/N)*Math.PI/180;
@@ -1570,20 +1571,20 @@ function kSelect(i){
   stopGuide();
   const first=!kSeen.includes(KP[i].k),allBefore=kSeen.length===KP.length;
   kIdx=i;
-  if(first){kSeen.push(KP[i].k);store.set('rl-know',kSeen.join(','))}
+  if(first){kSeen.push(KP[i].k)}
   kRender();
   kReveal(i);
   const f=PENT[i%10];tone(f,0,1.1,.07);tone(f*2,0,.7,.025);buzz();
   if(kSeen.length===KP.length&&!allBefore){
     kBubble('¡Descubriste todas las partes! Ya conoces tu rosario.');doneChime();
-    const d=$('#kDone');d.hidden=false;
+    try{store.set('rl-know-done','1')}catch(e){}const d=$('#kDone');d.hidden=false;
     try{d.style.scrollMarginTop='16px';d.scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}catch(e){}
   }else kBubble(first?K_OK[i%K_OK.length]:'Esta ya la descubriste. ¡Toca otra!');
   $('#kDone').hidden=kSeen.length<KP.length;
 }
 function kOpen(){
-  kIdx=-1;kRender();$('#kDone').hidden=kSeen.length<KP.length;
-  kBubble(kSeen.length===KP.length?'¡Ya conoces todas las partes! Puedes tocarlas otra vez cuando quieras.':'Toca una parte del rosario para descubrir qué es. ¡Las que brillan en azul te esperan!');
+  kSeen=[];kIdx=-1;stopGuide();kRender();$('#kDone').hidden=true;
+  kBubble(knowDone()?'¡Qué bueno verte otra vez por aquí! Toca cada parte y vuelve a descubrirla.':'Toca una parte del rosario para descubrir qué es. ¡Las que brillan en azul te esperan!');
   go('conoce');
 }
 $('#btnKnow').addEventListener('click',()=>{audio();tone(659.25,0,.8,.05);kOpen()});
@@ -1602,7 +1603,7 @@ $('#kSpeak').addEventListener('click',()=>{
 $('#kBack').addEventListener('click',()=>go('inicio'));
 $('#rBack').addEventListener('click',()=>go('inicio'));
 function refreshMenu(){
-  const know=typeof kSeen!=='undefined'&&kSeen.length>=KP.length;
+  const know=knowDone();
   const game=LEVELS.every((l,i)=>bestStars(i)>0);
   const st=[know,game,false];
   const nxt=st.findIndex(x=>!x);
