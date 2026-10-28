@@ -311,6 +311,12 @@ input[type=text]::placeholder{color:#7f92c4}
 .part.disc .mk{stroke:#241700}.part.disc .gd{fill:#241700}
 .part:not(.disc):not(.sel) .kb,.part:not(.disc):not(.sel) .kx{animation:kglow 2.6s ease-in-out infinite}
 @keyframes kglow{50%{stroke:var(--gold)}}
+.kring{fill:none;stroke:transparent;stroke-width:24;pointer-events:stroke}
+.part:not(.disc):not(.sel) .kring{animation:kring 2.6s ease-in-out infinite}
+.part.disc .kring{stroke:rgba(246,185,74,.12)}
+.part.sel .kring{stroke:rgba(255,211,110,.3)}
+@keyframes kring{0%,100%{stroke:rgba(246,185,74,0)}50%{stroke:rgba(246,185,74,.2)}}
+@media (prefers-reduced-motion:reduce){.part:not(.disc):not(.sel) .kring{animation:none}}
 .part.sel{filter:drop-shadow(0 0 7px rgba(255,211,110,.95))}
 .part.sel .kb,.part.sel .kx{stroke:#fff;stroke-width:2.4}
 .part:focus-visible .kb,.part:focus-visible .kx{stroke:#fff;stroke-width:2.6}
@@ -1411,12 +1417,12 @@ const IC={
 };
 function icon(k){return '<svg viewBox="0 0 40 40" aria-hidden="true">'+IC[k]+'</svg>'}
 const LEVELS=[
-  {n:'El inicio del rosario',sb:'Crucifijo y las primeras cuentas',intro:'Empezamos por la colita del rosario. ¿Con qué pieza empezamos a rezar?',p:[
+  {n:'El inicio del rosario',sb:'Crucifijo y las primeras cuentas',intro:'Empezamos por el tramo inicial del rosario. ¿Con qué pieza empezamos a rezar?',p:[
     {k:'c1',ic:'cruz',t:'Crucifijo',d:'Aquí nos persignamos y rezamos el Credo.'},
     {k:'c2',ic:'pn',t:'Cuenta grande · Padre Nuestro',d:'Una cuenta grande: rezamos el Padre Nuestro.'},
     {k:'c3',ic:'am3',t:'Tres cuentas · Ave Marías',d:'Tres Ave Marías: por la fe, la esperanza y el amor.'},
     {k:'c4',ic:'gl',t:'Cuenta del Gloria',d:'Alabamos a Dios con el Gloria.'},
-    {k:'c5',ic:'med',t:'Medalla',d:'Une la colita con las cinco decenas. Desde aquí empieza el primer misterio.'}]},
+    {k:'c5',ic:'med',t:'Medalla',d:'Une el tramo inicial con las cinco decenas. Desde aquí empieza el primer misterio.'}]},
   {n:'Una decena',sb:'Lo que rezamos en cada misterio',intro:'Ahora armamos una decena, que se repite en cada misterio. ¿Qué hacemos primero?',p:[
     {k:'d1',ic:'star',t:'Anuncio del misterio',d:'Decimos cuál es el misterio y pensamos en él.'},
     {k:'d2',ic:'pn',t:'Cuenta grande · Padre Nuestro',d:'La cuenta grande abre la decena con el Padre Nuestro.'},
@@ -1519,26 +1525,27 @@ const KP=[
   {k:'pn0',t:'Primera cuenta grande',d:'Justo después del crucifijo hay una cuenta grande. Ahí rezamos el Padre Nuestro, la oración que nos enseñó Jesús.',f:'Los amigos de Jesús le pidieron: «Enséñanos a orar», y él les enseñó el Padre Nuestro.'},
   {k:'am3',t:'Tres cuentas pequeñas',d:'Aquí rezamos tres Ave Marías y le pedimos a Dios tres regalos: fe, esperanza y amor.',f:'Esos tres regalos nos ayudan a acercarnos cada día más a Dios.'},
   {k:'gl0',t:'Cuenta del Gloria',d:'Después de las tres Ave Marías rezamos el Gloria, una oración para alabar al Padre, al Hijo y al Espíritu Santo.',f:'«Gloria» significa honor y alabanza. ¡Es como aplaudir a Dios con palabras!'},
-  {k:'med',t:'La medalla',d:'Es la pieza que une la colita con el círculo del rosario. Desde aquí empieza el primer misterio.',f:'Muchas medallas llevan la imagen de la Virgen María.'},
-  {k:'big',t:'Cuenta grande de cada decena',d:'Antes de cada misterio hay una cuenta grande. Ahí anunciamos el misterio y rezamos el Padre Nuestro.',f:'Son cinco cuentas grandes, una para cada misterio.'},
-  {k:'dec',t:'Las diez cuentas pequeñas',d:'Cada grupo de diez cuentas pequeñas es una decena. Rezamos diez Ave Marías mientras pensamos en el misterio.',f:'«Decena» viene de diez. Con cinco decenas, ¡son cincuenta Ave Marías!'}
+  {k:'med',t:'La medalla',d:'Es la pieza que une el tramo inicial con el círculo del rosario. Aquí anunciamos el primer misterio y rezamos el Padre Nuestro para empezar la primera decena.',f:'Muchas medallas llevan la imagen de la Virgen María.'},
+  {k:'cuerpo',t:'El cuerpo del rosario',d:'Después de la medalla viene el círculo, que es el cuerpo del rosario. Tiene 5 grupos de cuentas pequeñas, las decenas, separados por 4 cuentas grandes: en total son 50 cuentas pequeñas y 4 grandes.',f:'¡Una vuelta completa al círculo son los cinco misterios!'},
+  {k:'big',t:'Las cuentas grandes',d:'Entre una decena y la siguiente hay una cuenta grande. Ahí anunciamos el siguiente misterio y rezamos el Padre Nuestro. El primero lo rezamos en la medalla.',f:'Son 4 cuentas grandes en el círculo. Con la medalla, ¡cinco Padre Nuestro, uno para cada misterio!'},
+  {k:'dec',t:'Las cuentas pequeñas',d:'Son las 50 cuentas pequeñas, agrupadas de diez en diez. Cada grupo es una decena: rezamos diez Ave Marías mientras pensamos en el misterio.',f:'«Decena» viene de diez. Con cinco decenas, ¡son cincuenta Ave Marías!'}
 ];
 let kIdx=-1,kSeen=[];
 /* Cada visita empieza limpia: kSeen no se carga del almacenamiento. 'rl-know-done' solo recuerda que ya se completó (para el menú). */
 function knowDone(){try{return store.get('rl-know-done')==='1'||(store.get('rl-know')||'').split(',').filter(k=>KP.some(p=>p.k===k)).length>=KP.length}catch(e){return false}}
 (function buildKnow(){
-  const cx=180,cy=135,R=124,N=58;
+  const cx=180,cy=137,R=128,N=55;
   const ang=i=>(90+i*360/N)*Math.PI/180;
   const xy=i=>[cx+R*Math.cos(ang(i)),cy+R*Math.sin(ang(i))];
-  const g={};KP.forEach(p=>g[p.k]='');
+  const g={};KP.forEach(p=>g[p.k]='');g.cuerpo='<circle class="kring" cx="'+cx+'" cy="'+cy+'" r="'+R+'"/>';
   const bead=(k,x,y,r,hit)=>{g[k]+='<circle class="'+(r>6?'kx':'kb')+'" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r+'"/><circle class="hit" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+hit+'"/>'};
-  const BIG=[2,13,24,35,46];
-  for(let i=2;i<N-1;i++){const p=xy(i);if(BIG.includes(i))bead('big',p[0],p[1],8.5,11);else bead('dec',p[0],p[1],4.8,6.5)}
+  const BIG=[11,22,33,44];
+  for(let i=1;i<N;i++){const p=xy(i);if(BIG.includes(i))bead('big',p[0],p[1],8.5,11);else bead('dec',p[0],p[1],4.8,6.5)}
   const m=xy(0);
-  g.med+='<circle class="kx" cx="'+m[0]+'" cy="'+m[1]+'" r="10.5"/><path class="mk" d="M'+m[0].toFixed(1)+' '+(m[1]-5.5).toFixed(1)+'v11M'+(m[0]-5.5).toFixed(1)+' '+m[1].toFixed(1)+'h11"/><circle class="hit" cx="'+m[0]+'" cy="'+m[1]+'" r="17"/>';
-  bead('pn0',180,291,8.5,13);
+  g.med+='<circle class="kx" cx="'+m[0]+'" cy="'+m[1]+'" r="9.8"/><path class="mk" d="M'+m[0].toFixed(1)+' '+(m[1]-5.5).toFixed(1)+'v11M'+(m[0]-5.5).toFixed(1)+' '+m[1].toFixed(1)+'h11"/><circle class="hit" cx="'+m[0]+'" cy="'+m[1]+'" r="17"/>';
+  bead('pn0',180,374,8.5,13);
   [312,330,348].forEach(y=>bead('am3',180,y,4.8,8));
-  g.gl0+='<circle class="kx" cx="180" cy="374" r="9"/><circle class="gd" cx="180" cy="370" r="1.8"/><circle class="gd" cx="176" cy="377" r="1.8"/><circle class="gd" cx="184" cy="377" r="1.8"/><circle class="hit" cx="180" cy="374" r="13"/>';
+  g.gl0+='<circle class="kx" cx="180" cy="291" r="9"/><circle class="gd" cx="180" cy="287" r="1.8"/><circle class="gd" cx="176" cy="294" r="1.8"/><circle class="gd" cx="184" cy="294" r="1.8"/><circle class="hit" cx="180" cy="291" r="13"/>';
   g.cruz+='<rect class="kx" x="173" y="396" width="14" height="62" rx="5"/><rect class="kx" x="157" y="410" width="46" height="14" rx="5"/><rect class="hit" x="150" y="392" width="60" height="70"/>';
   let h='<circle class="kthread" cx="'+cx+'" cy="'+cy+'" r="'+R+'"/><line class="kthread" x1="180" y1="'+(cy+R)+'" x2="180" y2="404"/>';
   KP.forEach((p,i)=>{h+='<g class="part" data-i="'+i+'" tabindex="0" role="button" aria-label="'+esc(p.t)+'">'+g[p.k]+'</g>'});
@@ -1547,7 +1554,7 @@ function knowDone(){try{return store.get('rl-know-done')==='1'||(store.get('rl-k
 const K_OK=['¡Eso es! Mira lo que descubriste.','¡Muy bien! Sigue tocando.','¡Qué bien! Una parte más.','¡Excelente! Ya casi conoces tu rosario.'];
 function kBubble(t){const b=$('#kBubble');b.textContent=t;b.style.animation='none';void b.offsetWidth;b.style.animation='';$('#live').textContent=t}
 function kRender(){
-  $$('#kSvg .part').forEach((el,i)=>{el.classList.toggle('sel',i===kIdx);el.classList.toggle('disc',kSeen.includes(KP[i].k))});
+  $$('#kSvg .part').forEach((el,i)=>{el.classList.toggle('sel',i===kIdx||(kIdx>=0&&KP[kIdx].k==='cuerpo'&&(KP[i].k==='big'||KP[i].k==='dec')));el.classList.toggle('disc',kSeen.includes(KP[i].k))});
   $('#kProg').textContent='Descubriste '+kSeen.length+' de '+KP.length;
   const none=kIdx<0,P=KP[kIdx];
   $('#kTitle').textContent=none?'Toca una cuenta':P.t;
